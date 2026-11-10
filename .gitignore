@@ -1,0 +1,40 @@
+# Python / Backend
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Runtime data & generated cryptographic keys (never commit private keys or live cases)
+backend/data/keys/
+backend/data/cases/
+backend/data/settings.json
+data/keys/
+data/cases/
+data/settings.json
+
+# Secrets & Environment
+.env
+.env.*
+!.env.example
+
+# Node / Frontend
+frontend/node_modules/
+frontend/dist/
+node_modules/
+*.tsbuildinfo
+
+# Playwright / E2E temporary artifacts
+e2e/.pytest_cache/
+test-results/
+playwright-report/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
