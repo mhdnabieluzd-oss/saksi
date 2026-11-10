@@ -1,0 +1,86 @@
+import type { Classification, Lang } from "@/lib/types";
+
+export const CLASSIFICATIONS: readonly Classification[] = ["TERHAD", "SULIT", "RAHSIA", "RAHSIA BESAR"];
+
+export const CLASSIFICATION_BAND: Record<Classification, string> = {
+  TERHAD: "bg-amber text-bg",
+  SULIT: "bg-amber text-bg",
+  RAHSIA: "bg-red text-bg",
+  "RAHSIA BESAR": "bg-red text-bg",
+};
+
+const EN = {
+  commander: "Commander's Brief",
+  bluf: "Bottom line up front (BLUF)",
+  executive: "Executive Summary",
+  overview: "Incident Overview",
+  timeline: "Attack Timeline",
+  systems: "Affected Systems",
+  verified: "Verified Findings",
+  interpretations: "AI Interpretations",
+  risk: "Risk and Impact",
+  decisions: "Decisions Needed",
+  actions: "Recommended Actions",
+  custody: "Chain-of-Custody Summary",
+  reportHash: "Report hash",
+  verifiedBadge: "Verified against evidence",
+  interpretationBadge: "AI interpretation, not verified fact",
+  caseId: "Case",
+  generated: "Generated",
+  model: "Model",
+  time: "Time",
+  event: "Event",
+  evidence: "Evidence",
+  technique: "Technique",
+  riskLevel: "Risk level",
+  entries: "Entries",
+  chain: "Chain",
+  chainOk: "Intact",
+  chainBroken: "Broken",
+  headHash: "Head hash",
+  signature: "Signature",
+  valid: "Valid",
+  invalid: "Invalid",
+  notChecked: "Not checked",
+  none: "None recorded",
+};
+
+const MS: typeof EN = {
+  commander: "Taklimat Komander",
+  bluf: "Ringkasan utama (BLUF)",
+  executive: "Ringkasan Eksekutif",
+  overview: "Gambaran Insiden",
+  timeline: "Garis Masa Serangan",
+  systems: "Sistem Terjejas",
+  verified: "Penemuan Disahkan",
+  interpretations: "Tafsiran AI",
+  risk: "Risiko dan Kesan",
+  decisions: "Keputusan Diperlukan",
+  actions: "Tindakan Disyorkan",
+  custody: "Ringkasan Rantaian Jagaan",
+  reportHash: "Cincang laporan",
+  verifiedBadge: "Disahkan terhadap bukti",
+  interpretationBadge: "Tafsiran AI, bukan fakta yang disahkan",
+  caseId: "Kes",
+  generated: "Dijana",
+  model: "Model",
+  time: "Masa",
+  event: "Peristiwa",
+  evidence: "Bukti",
+  technique: "Teknik",
+  riskLevel: "Tahap risiko",
+  entries: "Entri",
+  chain: "Rantaian",
+  chainOk: "Utuh",
+  chainBroken: "Terputus",
+  headHash: "Cincang kepala",
+  signature: "Tandatangan",
+  valid: "Sah",
+  invalid: "Tidak sah",
+  notChecked: "Belum disemak",
+  none: "Tiada direkodkan",
+};
+
+export const COPY: Record<Lang, typeof EN> = { en: EN, ms: MS };
+
+export const LANG_LABEL: Record<Lang, string> = { ms: "Bahasa Melayu", en: "English" };

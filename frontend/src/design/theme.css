@@ -1,0 +1,210 @@
+/* ============================================================================
+   SAKSI — Forensic & SOC Operations Design System (Cortex XSIAM Calibration)
+   ============================================================================ */
+
+:root {
+  color-scheme: dark;
+
+  /* 1. Surfaces (Obsidian-Slate Hierarchy — never pure #000000) */
+  --bg-canvas:     #0A0D12;
+  --bg-surface-1:  #0F141B;
+  --bg-surface-2:  #141B24;
+  --bg-surface-3:  #1A2330;
+  --bg-glass:      rgba(15, 20, 27, 0.82);
+
+  /* 2. Borders & Hairlines */
+  --border-subtle: #1E2836;
+  --border-strong: #2B394D;
+  --border-focus:  #22D3EE;
+
+  /* 3. Text Hierarchy */
+  --text-primary:   #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted:     #64748B;
+  --text-inverse:   #06100C;
+
+  /* 4. Brand & Interactive Accents (Cortex XSIAM Calibration) */
+  --brand-primary:       #10D078;
+  --brand-primary-hover: #34E08E;
+  --brand-primary-muted: rgba(16, 208, 120, 0.14);
+  --brand-secondary:     #06B6D4;
+  --brand-cta-accent:    #FA582D;
+
+  /* 5. Severity Tokens (Cortex XSIAM Teardown: Critical is deep crimson #B91C1C, High is bright red #E5484D) */
+  --sev-critical:    #B91C1C;
+  --sev-critical-bg: rgba(185, 28, 28, 0.18);
+  --sev-critical-bd: rgba(239, 68, 68, 0.45);
+
+  --sev-high:        #E5484D;
+  --sev-high-bg:     rgba(229, 72, 77, 0.14);
+  --sev-high-bd:     rgba(229, 72, 77, 0.38);
+
+  --sev-medium:      #F59E0B;
+  --sev-medium-bg:   rgba(245, 158, 11, 0.14);
+  --sev-medium-bd:   rgba(245, 158, 11, 0.38);
+
+  --sev-low:         #3B82F6;
+  --sev-low-bg:      rgba(59, 130, 246, 0.14);
+  --sev-low-bd:      rgba(59, 130, 246, 0.38);
+
+  --sev-info:        #64748B;
+  --sev-info-bg:     rgba(100, 116, 139, 0.14);
+  --sev-info-bd:     rgba(100, 116, 139, 0.38);
+
+  /* 6. Verification & Provenance Tokens */
+  --state-verified:    #10B981;
+  --state-verified-bg: rgba(16, 185, 129, 0.12);
+  --state-inferred:    #F59E0B;
+  --state-inferred-bg: rgba(245, 158, 11, 0.12);
+  --state-rejected:    #F43F5E;
+  --state-rejected-bg: rgba(244, 63, 94, 0.12);
+  --state-quarantined: #E11D48;
+  --state-simulated:   #38BDF8;
+  --state-blocked:     #FB7185;
+
+  /* 7. Specialist Agent Identity Accents */
+  --agent-triage:       #06B6D4; /* Sentinel Cyan */
+  --agent-investigator: #10D078; /* Cortex Emerald */
+  --agent-verifier:     #F59E0B; /* Forensic Amber */
+  --agent-reporter:     #818CF8; /* Briefing Indigo */
+
+  /* 8. MITRE ATT&CK Tactic Header Accents */
+  --tactic-recon:       #64748B;
+  --tactic-initial:     #F97316;
+  --tactic-execution:   #EF4444;
+  --tactic-persistence: #EC4899;
+  --tactic-privesc:     #D946EF;
+  --tactic-evasion:     #A855F7;
+  --tactic-cred:        #EAB308;
+  --tactic-discovery:   #06B6D4;
+  --tactic-lateral:     #3B82F6;
+  --tactic-collection:  #14B8A6;
+  --tactic-c2:          #F43F5E;
+  --tactic-exfil:       #DC2626;
+
+  /* 9. Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'IBM Plex Mono', 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  /* 10. Radii & Elevation */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --shadow-panel:  0 1px 0 0 rgba(255, 255, 255, 0.04) inset, 0 8px 24px -8px rgba(0, 0, 0, 0.55);
+  --shadow-drawer: -12px 0 36px -8px rgba(0, 0, 0, 0.72);
+  --shadow-modal:  0 24px 64px -12px rgba(0, 0, 0, 0.82), 0 0 0 1px var(--border-strong);
+
+  /* 11. Motion & Easing */
+  --ease-snappy: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur-micro:   120ms;
+  --dur-fast:    180ms;
+  --dur-panel:   240ms;
+  --dur-stage:   360ms;
+}
+
+.font-tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+.font-mono-tech {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.soc-panel {
+  background-color: var(--bg-surface-1);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-panel);
+}
+
+.soc-panel-elevated {
+  background-color: var(--bg-surface-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-panel);
+}
+
+/* Cortex XSIAM solid square letter severity badge (C / H / M / L / I) */
+.xsiam-sev-square {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 3px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  color: #FFFFFF;
+  flex-shrink: 0;
+}
+.xsiam-sev-square[data-sev="critical"] { background-color: var(--sev-critical); }
+.xsiam-sev-square[data-sev="high"]     { background-color: var(--sev-high); }
+.xsiam-sev-square[data-sev="medium"]   { background-color: var(--sev-medium); color: #0A0D12; }
+.xsiam-sev-square[data-sev="low"]      { background-color: var(--sev-low); }
+.xsiam-sev-square[data-sev="info"]     { background-color: var(--sev-info); }
+
+/* Keyframe Animations */
+@keyframes agent-radar-sweep {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes agent-ring-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50%      { opacity: 0.85; transform: scale(1.03); }
+}
+
+@keyframes dag-edge-flow {
+  from { stroke-dashoffset: 24; }
+  to   { stroke-dashoffset: 0; }
+}
+
+@keyframes status-beacon {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.4; }
+}
+
+.animate-radar-sweep {
+  transform-origin: center;
+  animation: agent-radar-sweep 3.2s linear infinite;
+}
+
+.animate-ring-pulse {
+  transform-origin: center;
+  animation: agent-ring-pulse 2.2s var(--ease-smooth) infinite;
+}
+
+.animate-dag-edge {
+  stroke-dasharray: 6 6;
+  animation: dag-edge-flow 1.1s linear infinite;
+}
+
+.animate-beacon {
+  animation: status-beacon 1.6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .animate-radar-sweep,
+  .animate-ring-pulse,
+  .animate-dag-edge,
+  .animate-beacon {
+    animation: none !important;
+  }
+  [data-motion="animated"] { display: none !important; }
+  [data-motion="static"]   { display: block !important; }
+}
+
+[data-motion="static"] { display: none; }
+
