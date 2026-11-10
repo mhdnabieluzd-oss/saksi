@@ -1,0 +1,46 @@
+{
+  "case_id": "CASE-2026-0001",
+  "state": "completed",
+  "agents": [
+    {
+      "name": "triage",
+      "state": "completed",
+      "current_task": "Writing scope statement",
+      "progress": 100,
+      "started_at": "2026-11-09T11:12:30Z",
+      "finished_at": "2026-11-09T11:12:31Z",
+      "output_summary": "11 signals, 1 shield alert, priority critical"
+    },
+    {
+      "name": "investigator",
+      "state": "completed",
+      "current_task": "Investigating signals and evidence",
+      "progress": 100,
+      "started_at": "2026-11-09T11:12:31Z",
+      "finished_at": "2026-11-09T11:12:33Z",
+      "output_summary": "12 findings across 6 tool calls"
+    },
+    {
+      "name": "verifier",
+      "state": "completed",
+      "current_task": "Checking evidence, ATT&CK and entities",
+      "progress": 100,
+      "started_at": "2026-11-09T11:12:33Z",
+      "finished_at": "2026-11-09T11:12:34Z",
+      "output_summary": "12 verified, 0 to review, 0 rejected"
+    },
+    {
+      "name": "reporter",
+      "state": "completed",
+      "current_task": "Writing the English report",
+      "progress": 100,
+      "started_at": "2026-11-09T11:12:34Z",
+      "finished_at": "2026-11-09T11:12:35Z",
+      "output_summary": "EN & BM reports ready"
+    }
+  ],
+  "started_at": "2026-11-09T11:12:30Z",
+  "finished_at": "2026-11-09T11:12:35Z",
+  "model": "saksi-fast-workflow",
+  "error": null
+}

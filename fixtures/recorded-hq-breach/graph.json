@@ -1,0 +1,665 @@
+{
+  "nodes": [
+    {
+      "id": "file:C:\\Users\\Public\\lsass.dmp",
+      "kind": "file",
+      "label": "C:\\Users\\Public\\lsass.dmp",
+      "risk": "critical",
+      "first_seen": "2026-11-03T02:04:17.205Z",
+      "last_seen": "2026-11-03T02:04:17.205Z",
+      "event_ids": [
+        "EV-00791"
+      ],
+      "finding_ids": [
+        "F-008"
+      ]
+    },
+    {
+      "id": "host:FS-LOGISTIK-01",
+      "kind": "host",
+      "label": "FS-LOGISTIK-01",
+      "risk": "critical",
+      "first_seen": "2026-11-03T02:21:33.000Z",
+      "last_seen": "2026-11-03T03:44:12.000Z",
+      "event_ids": [
+        "EV-00895",
+        "EV-00896",
+        "EV-00897",
+        "EV-00898",
+        "EV-01246",
+        "EV-01413"
+      ],
+      "finding_ids": [
+        "F-009",
+        "F-010",
+        "F-011",
+        "F-013"
+      ]
+    },
+    {
+      "id": "host:WEB-PORTAL-01",
+      "kind": "host",
+      "label": "WEB-PORTAL-01",
+      "risk": "critical",
+      "first_seen": "2026-11-03T01:10:04.000Z",
+      "last_seen": "2026-11-03T02:21:35.000Z",
+      "event_ids": [
+        "EV-00414",
+        "EV-00415",
+        "EV-00416",
+        "EV-00417",
+        "EV-00418",
+        "EV-00419",
+        "EV-00420",
+        "EV-00421",
+        "EV-00422",
+        "EV-00423",
+        "EV-00425",
+        "EV-00426",
+        "EV-00427",
+        "EV-00428",
+        "EV-00429",
+        "EV-00430",
+        "EV-00431",
+        "EV-00432",
+        "EV-00433",
+        "EV-00434",
+        "EV-00437",
+        "EV-00438",
+        "EV-00439",
+        "EV-00440",
+        "EV-00441",
+        "EV-00505",
+        "EV-00506",
+        "EV-00510",
+        "EV-00569",
+        "EV-00578",
+        "EV-00599",
+        "EV-00631",
+        "EV-00669",
+        "EV-00720",
+        "EV-00724",
+        "EV-00786",
+        "EV-00895",
+        "EV-00896"
+      ],
+      "finding_ids": [
+        "F-001",
+        "F-002",
+        "F-003",
+        "F-005",
+        "F-006",
+        "F-007",
+        "F-008",
+        "F-009"
+      ]
+    },
+    {
+      "id": "ip:198.51.100.77",
+      "kind": "ip",
+      "label": "198.51.100.77",
+      "risk": "critical",
+      "first_seen": "2026-11-03T01:52:40.402Z",
+      "last_seen": "2026-11-03T03:44:12.000Z",
+      "event_ids": [
+        "EV-00724",
+        "EV-01246",
+        "EV-01413"
+      ],
+      "finding_ids": [
+        "F-007",
+        "F-013"
+      ]
+    },
+    {
+      "id": "ip:203.0.113.66",
+      "kind": "ip",
+      "label": "203.0.113.66",
+      "risk": "critical",
+      "first_seen": "2026-11-03T01:10:04.000Z",
+      "last_seen": "2026-11-03T02:04:15.000Z",
+      "event_ids": [
+        "EV-00414",
+        "EV-00415",
+        "EV-00416",
+        "EV-00417",
+        "EV-00418",
+        "EV-00419",
+        "EV-00420",
+        "EV-00421",
+        "EV-00422",
+        "EV-00423",
+        "EV-00425",
+        "EV-00426",
+        "EV-00427",
+        "EV-00428",
+        "EV-00429",
+        "EV-00430",
+        "EV-00431",
+        "EV-00432",
+        "EV-00433",
+        "EV-00434",
+        "EV-00437",
+        "EV-00438",
+        "EV-00439",
+        "EV-00440",
+        "EV-00441",
+        "EV-00505",
+        "EV-00506",
+        "EV-00510",
+        "EV-00569",
+        "EV-00578",
+        "EV-00599",
+        "EV-00631",
+        "EV-00669",
+        "EV-00720",
+        "EV-00786"
+      ],
+      "finding_ids": [
+        "F-001",
+        "F-002",
+        "F-003",
+        "F-005",
+        "F-006",
+        "F-008"
+      ]
+    },
+    {
+      "id": "process:cmd.exe@FS-LOGISTIK-01",
+      "kind": "process",
+      "label": "cmd.exe@FS-LOGISTIK-01",
+      "risk": "critical",
+      "first_seen": "2026-11-03T02:22:02.774Z",
+      "last_seen": "2026-11-03T03:18:20.301Z",
+      "event_ids": [
+        "EV-00902",
+        "EV-01010",
+        "EV-01245"
+      ],
+      "finding_ids": [
+        "F-011",
+        "F-012",
+        "F-013"
+      ]
+    },
+    {
+      "id": "process:cmd.exe@WEB-PORTAL-01",
+      "kind": "process",
+      "label": "cmd.exe@WEB-PORTAL-01",
+      "risk": "critical",
+      "first_seen": "2026-11-03T01:33:41.872Z",
+      "last_seen": "2026-11-03T02:04:15.960Z",
+      "event_ids": [
+        "EV-00581",
+        "EV-00600",
+        "EV-00632",
+        "EV-00670",
+        "EV-00788",
+        "EV-00789"
+      ],
+      "finding_ids": [
+        "F-004",
+        "F-005",
+        "F-008"
+      ]
+    },
+    {
+      "id": "process:curl.exe@FS-LOGISTIK-01",
+      "kind": "process",
+      "label": "curl.exe@FS-LOGISTIK-01",
+      "risk": "critical",
+      "first_seen": "2026-11-03T03:18:20.301Z",
+      "last_seen": "2026-11-03T03:18:20.301Z",
+      "event_ids": [
+        "EV-01245"
+      ],
+      "finding_ids": [
+        "F-013"
+      ]
+    },
+    {
+      "id": "process:lsass.exe@WEB-PORTAL-01",
+      "kind": "process",
+      "label": "lsass.exe@WEB-PORTAL-01",
+      "risk": "critical",
+      "first_seen": "2026-11-03T02:04:16.410Z",
+      "last_seen": "2026-11-03T02:04:16.410Z",
+      "event_ids": [
+        "EV-00790"
+      ],
+      "finding_ids": [
+        "F-008"
+      ]
+    },
+    {
+      "id": "process:rundll32.exe@WEB-PORTAL-01",
+      "kind": "process",
+      "label": "rundll32.exe@WEB-PORTAL-01",
+      "risk": "critical",
+      "first_seen": "2026-11-03T02:04:15.960Z",
+      "last_seen": "2026-11-03T02:04:17.205Z",
+      "event_ids": [
+        "EV-00789",
+        "EV-00790",
+        "EV-00791"
+      ],
+      "finding_ids": [
+        "F-008"
+      ]
+    },
+    {
+      "id": "process:w3wp.exe@WEB-PORTAL-01",
+      "kind": "process",
+      "label": "w3wp.exe@WEB-PORTAL-01",
+      "risk": "critical",
+      "first_seen": "2026-11-03T01:33:41.872Z",
+      "last_seen": "2026-11-03T02:04:15.233Z",
+      "event_ids": [
+        "EV-00581",
+        "EV-00600",
+        "EV-00632",
+        "EV-00670",
+        "EV-00721",
+        "EV-00788"
+      ],
+      "finding_ids": [
+        "F-004",
+        "F-005",
+        "F-006",
+        "F-007",
+        "F-008"
+      ]
+    },
+    {
+      "id": "file:C:\\Users\\Public\\q4.7z",
+      "kind": "file",
+      "label": "C:\\Users\\Public\\q4.7z",
+      "risk": "high",
+      "first_seen": "2026-11-03T02:41:02.887Z",
+      "last_seen": "2026-11-03T02:41:02.887Z",
+      "event_ids": [
+        "EV-01015"
+      ],
+      "finding_ids": [
+        "F-012"
+      ]
+    },
+    {
+      "id": "process:7z.exe@FS-LOGISTIK-01",
+      "kind": "process",
+      "label": "7z.exe@FS-LOGISTIK-01",
+      "risk": "high",
+      "first_seen": "2026-11-03T02:40:05.530Z",
+      "last_seen": "2026-11-03T02:41:02.887Z",
+      "event_ids": [
+        "EV-01010",
+        "EV-01015"
+      ],
+      "finding_ids": [
+        "F-012"
+      ]
+    },
+    {
+      "id": "process:powershell.exe@WEB-PORTAL-01",
+      "kind": "process",
+      "label": "powershell.exe@WEB-PORTAL-01",
+      "risk": "high",
+      "first_seen": "2026-11-03T01:52:03.118Z",
+      "last_seen": "2026-11-03T01:52:03.118Z",
+      "event_ids": [
+        "EV-00721"
+      ],
+      "finding_ids": [
+        "F-006",
+        "F-007"
+      ]
+    },
+    {
+      "id": "process:psexesvc.exe@FS-LOGISTIK-01",
+      "kind": "process",
+      "label": "psexesvc.exe@FS-LOGISTIK-01",
+      "risk": "high",
+      "first_seen": "2026-11-03T02:21:40.000Z",
+      "last_seen": "2026-11-03T02:22:02.774Z",
+      "event_ids": [
+        "EV-00898",
+        "EV-00899",
+        "EV-00902"
+      ],
+      "finding_ids": [
+        "F-011"
+      ]
+    },
+    {
+      "id": "process:services.exe@FS-LOGISTIK-01",
+      "kind": "process",
+      "label": "services.exe@FS-LOGISTIK-01",
+      "risk": "high",
+      "first_seen": "2026-11-03T02:21:40.120Z",
+      "last_seen": "2026-11-03T02:21:40.120Z",
+      "event_ids": [
+        "EV-00899"
+      ],
+      "finding_ids": [
+        "F-011"
+      ]
+    },
+    {
+      "id": "user:LOGISTIK\\k.hafiz",
+      "kind": "user",
+      "label": "LOGISTIK\\k.hafiz",
+      "risk": "high",
+      "first_seen": "2026-11-03T02:21:33.000Z",
+      "last_seen": "2026-11-03T02:21:38.000Z",
+      "event_ids": [
+        "EV-00895",
+        "EV-00896",
+        "EV-00897"
+      ],
+      "finding_ids": [
+        "F-009",
+        "F-010"
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "id": "E-001",
+      "source": "ip:203.0.113.66",
+      "target": "host:WEB-PORTAL-01",
+      "label": "HTTP GET 301",
+      "ts": "2026-11-03T01:10:04.000Z",
+      "event_ids": [
+        "EV-00414",
+        "EV-00428"
+      ],
+      "step": 1
+    },
+    {
+      "id": "E-002",
+      "source": "ip:203.0.113.66",
+      "target": "host:WEB-PORTAL-01",
+      "label": "HTTP GET 404",
+      "ts": "2026-11-03T01:10:10.000Z",
+      "event_ids": [
+        "EV-00415",
+        "EV-00416",
+        "EV-00417",
+        "EV-00418",
+        "EV-00419",
+        "EV-00420",
+        "EV-00421",
+        "EV-00425",
+        "EV-00426",
+        "EV-00427",
+        "EV-00429",
+        "EV-00430",
+        "EV-00431",
+        "EV-00432",
+        "EV-00434",
+        "EV-00437",
+        "EV-00438",
+        "EV-00439",
+        "EV-00440",
+        "EV-00441"
+      ],
+      "step": 1
+    },
+    {
+      "id": "E-003",
+      "source": "ip:203.0.113.66",
+      "target": "host:WEB-PORTAL-01",
+      "label": "HTTP GET 403",
+      "ts": "2026-11-03T01:10:33.000Z",
+      "event_ids": [
+        "EV-00422",
+        "EV-00423",
+        "EV-00433"
+      ],
+      "step": 1
+    },
+    {
+      "id": "E-004",
+      "source": "ip:203.0.113.66",
+      "target": "host:WEB-PORTAL-01",
+      "label": "HTTP GET 500",
+      "ts": "2026-11-03T01:19:21.000Z",
+      "event_ids": [
+        "EV-00505",
+        "EV-00506"
+      ],
+      "step": 2
+    },
+    {
+      "id": "E-005",
+      "source": "ip:203.0.113.66",
+      "target": "host:WEB-PORTAL-01",
+      "label": "HTTP GET 302",
+      "ts": "2026-11-03T01:19:58.000Z",
+      "event_ids": [
+        "EV-00510"
+      ],
+      "step": 2
+    },
+    {
+      "id": "E-006",
+      "source": "ip:203.0.113.66",
+      "target": "host:WEB-PORTAL-01",
+      "label": "HTTP POST 200",
+      "ts": "2026-11-03T01:31:55.000Z",
+      "event_ids": [
+        "EV-00569"
+      ],
+      "step": 3
+    },
+    {
+      "id": "E-007",
+      "source": "ip:203.0.113.66",
+      "target": "host:WEB-PORTAL-01",
+      "label": "HTTP GET 200",
+      "ts": "2026-11-03T01:33:10.000Z",
+      "event_ids": [
+        "EV-00578",
+        "EV-00599",
+        "EV-00631",
+        "EV-00669",
+        "EV-00720",
+        "EV-00786"
+      ],
+      "step": 3
+    },
+    {
+      "id": "E-008",
+      "source": "process:w3wp.exe@WEB-PORTAL-01",
+      "target": "process:cmd.exe@WEB-PORTAL-01",
+      "label": "spawned",
+      "ts": "2026-11-03T01:33:41.872Z",
+      "event_ids": [
+        "EV-00581",
+        "EV-00600",
+        "EV-00632",
+        "EV-00670",
+        "EV-00788"
+      ],
+      "step": 4
+    },
+    {
+      "id": "E-009",
+      "source": "process:w3wp.exe@WEB-PORTAL-01",
+      "target": "process:powershell.exe@WEB-PORTAL-01",
+      "label": "spawned",
+      "ts": "2026-11-03T01:52:03.118Z",
+      "event_ids": [
+        "EV-00721"
+      ],
+      "step": 6
+    },
+    {
+      "id": "E-010",
+      "source": "host:WEB-PORTAL-01",
+      "target": "ip:198.51.100.77",
+      "label": "connection",
+      "ts": "2026-11-03T01:52:40.402Z",
+      "event_ids": [
+        "EV-00724"
+      ],
+      "step": 7
+    },
+    {
+      "id": "E-011",
+      "source": "process:cmd.exe@WEB-PORTAL-01",
+      "target": "process:rundll32.exe@WEB-PORTAL-01",
+      "label": "spawned",
+      "ts": "2026-11-03T02:04:15.960Z",
+      "event_ids": [
+        "EV-00789"
+      ],
+      "step": 8
+    },
+    {
+      "id": "E-012",
+      "source": "process:rundll32.exe@WEB-PORTAL-01",
+      "target": "process:lsass.exe@WEB-PORTAL-01",
+      "label": "read memory",
+      "ts": "2026-11-03T02:04:16.410Z",
+      "event_ids": [
+        "EV-00790"
+      ],
+      "step": 8
+    },
+    {
+      "id": "E-013",
+      "source": "process:rundll32.exe@WEB-PORTAL-01",
+      "target": "file:C:\\Users\\Public\\lsass.dmp",
+      "label": "created",
+      "ts": "2026-11-03T02:04:17.205Z",
+      "event_ids": [
+        "EV-00791"
+      ],
+      "step": 8
+    },
+    {
+      "id": "E-014",
+      "source": "host:WEB-PORTAL-01",
+      "target": "host:FS-LOGISTIK-01",
+      "label": "logon as LOGISTIK\\k.hafiz",
+      "ts": "2026-11-03T02:21:33.000Z",
+      "event_ids": [
+        "EV-00895",
+        "EV-00896"
+      ],
+      "step": 9
+    },
+    {
+      "id": "E-015",
+      "source": "user:LOGISTIK\\k.hafiz",
+      "target": "host:FS-LOGISTIK-01",
+      "label": "authenticated",
+      "ts": "2026-11-03T02:21:33.000Z",
+      "event_ids": [
+        "EV-00895",
+        "EV-00896"
+      ],
+      "step": 9
+    },
+    {
+      "id": "E-016",
+      "source": "user:LOGISTIK\\k.hafiz",
+      "target": "host:FS-LOGISTIK-01",
+      "label": "accessed ADMIN$",
+      "ts": "2026-11-03T02:21:38.000Z",
+      "event_ids": [
+        "EV-00897"
+      ],
+      "step": 10
+    },
+    {
+      "id": "E-017",
+      "source": "host:FS-LOGISTIK-01",
+      "target": "process:psexesvc.exe@FS-LOGISTIK-01",
+      "label": "service installed",
+      "ts": "2026-11-03T02:21:40.000Z",
+      "event_ids": [
+        "EV-00898"
+      ],
+      "step": 11
+    },
+    {
+      "id": "E-018",
+      "source": "process:services.exe@FS-LOGISTIK-01",
+      "target": "process:psexesvc.exe@FS-LOGISTIK-01",
+      "label": "spawned",
+      "ts": "2026-11-03T02:21:40.120Z",
+      "event_ids": [
+        "EV-00899"
+      ],
+      "step": 11
+    },
+    {
+      "id": "E-019",
+      "source": "process:psexesvc.exe@FS-LOGISTIK-01",
+      "target": "process:cmd.exe@FS-LOGISTIK-01",
+      "label": "spawned",
+      "ts": "2026-11-03T02:22:02.774Z",
+      "event_ids": [
+        "EV-00902"
+      ],
+      "step": 11
+    },
+    {
+      "id": "E-020",
+      "source": "process:cmd.exe@FS-LOGISTIK-01",
+      "target": "process:7z.exe@FS-LOGISTIK-01",
+      "label": "spawned",
+      "ts": "2026-11-03T02:40:05.530Z",
+      "event_ids": [
+        "EV-01010"
+      ],
+      "step": 12
+    },
+    {
+      "id": "E-021",
+      "source": "process:7z.exe@FS-LOGISTIK-01",
+      "target": "file:C:\\Users\\Public\\q4.7z",
+      "label": "created",
+      "ts": "2026-11-03T02:41:02.887Z",
+      "event_ids": [
+        "EV-01015"
+      ],
+      "step": 12
+    },
+    {
+      "id": "E-022",
+      "source": "process:cmd.exe@FS-LOGISTIK-01",
+      "target": "process:curl.exe@FS-LOGISTIK-01",
+      "label": "spawned",
+      "ts": "2026-11-03T03:18:20.301Z",
+      "event_ids": [
+        "EV-01245"
+      ],
+      "step": 13
+    },
+    {
+      "id": "E-023",
+      "source": "host:FS-LOGISTIK-01",
+      "target": "ip:198.51.100.77",
+      "label": "connection",
+      "ts": "2026-11-03T03:18:24.812Z",
+      "event_ids": [
+        "EV-01246"
+      ],
+      "step": 13
+    },
+    {
+      "id": "E-024",
+      "source": "host:FS-LOGISTIK-01",
+      "target": "ip:198.51.100.77",
+      "label": "exfiltration 432 MB",
+      "ts": "2026-11-03T03:44:12.000Z",
+      "event_ids": [
+        "EV-01413"
+      ],
+      "step": 13
+    }
+  ]
+}

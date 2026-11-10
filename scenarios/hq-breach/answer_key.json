@@ -1,0 +1,378 @@
+[
+  {
+    "technique_id": "T1595.002",
+    "tactic": "Reconnaissance",
+    "description": "Directory and file probing of the portal from 203.0.113.66 (gobuster, 404 burst).",
+    "refs": [
+      {
+        "file": "web_access.jsonl",
+        "index": 237
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 238
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 239
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 240
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 241
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 242
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 243
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 244
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 245
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 246
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 248
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 249
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 250
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 251
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 252
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 253
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 254
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 255
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 256
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 257
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 260
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 261
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 262
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 263
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 264
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 265
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 267
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 269
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 270
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 271
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 272
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 274
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 276
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 278
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 279
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 280
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 281
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 283
+      }
+    ]
+  },
+  {
+    "technique_id": "T1190",
+    "tactic": "Initial Access",
+    "description": "SQL injection against /login.aspx to bypass authentication.",
+    "refs": [
+      {
+        "file": "web_access.jsonl",
+        "index": 308
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 309
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 310
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 312
+      }
+    ]
+  },
+  {
+    "technique_id": "T1505.003",
+    "tactic": "Persistence",
+    "description": "Web shell img_upd.aspx uploaded and invoked with cmd= parameters.",
+    "refs": [
+      {
+        "file": "web_access.jsonl",
+        "index": 348
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 355
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 357
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 368
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 386
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 406
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 440
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 474
+      }
+    ]
+  },
+  {
+    "technique_id": "T1059.001",
+    "tactic": "Execution",
+    "description": "w3wp.exe spawns an encoded PowerShell command line.",
+    "refs": [
+      {
+        "file": "sysmon.jsonl",
+        "index": 131
+      },
+      {
+        "file": "web_access.jsonl",
+        "index": 440
+      }
+    ]
+  },
+  {
+    "technique_id": "T1059.003",
+    "tactic": "Execution",
+    "description": "w3wp.exe spawns cmd.exe to run the web shell commands.",
+    "refs": [
+      {
+        "file": "sysmon.jsonl",
+        "index": 102
+      },
+      {
+        "file": "sysmon.jsonl",
+        "index": 108
+      },
+      {
+        "file": "sysmon.jsonl",
+        "index": 117
+      },
+      {
+        "file": "sysmon.jsonl",
+        "index": 124
+      },
+      {
+        "file": "sysmon.jsonl",
+        "index": 148
+      }
+    ]
+  },
+  {
+    "technique_id": "T1027",
+    "tactic": "Stealth",
+    "description": "Base64 (UTF-16LE) encoded PowerShell via -enc.",
+    "refs": [
+      {
+        "file": "sysmon.jsonl",
+        "index": 131
+      }
+    ]
+  },
+  {
+    "technique_id": "T1003.001",
+    "tactic": "Credential Access",
+    "description": "comsvcs.dll MiniDump of lsass.exe creating C:\\Users\\Public\\lsass.dmp.",
+    "refs": [
+      {
+        "file": "web_access.jsonl",
+        "index": 474
+      },
+      {
+        "file": "sysmon.jsonl",
+        "index": 149
+      },
+      {
+        "file": "sysmon.jsonl",
+        "index": 150
+      },
+      {
+        "file": "sysmon.jsonl",
+        "index": 151
+      }
+    ]
+  },
+  {
+    "technique_id": "T1078",
+    "tactic": "Privilege Escalation",
+    "description": "Stolen LOGISTIK\\k.hafiz used for an explicit-credential logon and a network logon.",
+    "refs": [
+      {
+        "file": "siem_events.json",
+        "index": 177
+      },
+      {
+        "file": "siem_events.json",
+        "index": 178
+      }
+    ]
+  },
+  {
+    "technique_id": "T1021.002",
+    "tactic": "Lateral Movement",
+    "description": "SMB access to FS-LOGISTIK-01 ADMIN$ share as k.hafiz.",
+    "refs": [
+      {
+        "file": "siem_events.json",
+        "index": 179
+      },
+      {
+        "file": "siem_events.json",
+        "index": 178
+      }
+    ]
+  },
+  {
+    "technique_id": "T1569.002",
+    "tactic": "Execution",
+    "description": "PsExec service PSEXESVC installed on FS-LOGISTIK-01.",
+    "refs": [
+      {
+        "file": "siem_events.json",
+        "index": 180
+      },
+      {
+        "file": "sysmon.jsonl",
+        "index": 180
+      }
+    ]
+  },
+  {
+    "technique_id": "T1560.001",
+    "tactic": "Collection",
+    "description": "7-Zip archive of D:\\Shares\\Logistik\\Jadual_Penghantaran_Q4 with a password.",
+    "refs": [
+      {
+        "file": "sysmon.jsonl",
+        "index": 210
+      },
+      {
+        "file": "sysmon.jsonl",
+        "index": 211
+      }
+    ]
+  },
+  {
+    "technique_id": "T1041",
+    "tactic": "Exfiltration",
+    "description": "412 MB HTTPS upload of q4.7z to 198.51.100.77:443.",
+    "refs": [
+      {
+        "file": "sysmon.jsonl",
+        "index": 265
+      },
+      {
+        "file": "sysmon.jsonl",
+        "index": 266
+      },
+      {
+        "file": "siem_events.json",
+        "index": 284
+      }
+    ]
+  }
+]

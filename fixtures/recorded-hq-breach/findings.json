@@ -1,0 +1,912 @@
+[
+  {
+    "id": "F-001",
+    "title": "Web scanning of WEB-PORTAL-01 from 203.0.113.66",
+    "summary": "Between 01:10 and 01:11 on 2026-11-03, 203.0.113.66 sent a rapid series of requests to WEB-PORTAL-01 (10.10.1.10) for admin, backup, config and API paths, using the Nmap Scripting Engine user agent. Most returned 404, with some 301 and 403 responses.",
+    "tactic": "Reconnaissance",
+    "technique_id": "T1595.002",
+    "technique_name": "Vulnerability Scanning",
+    "evidence_ids": [
+      "EV-00414",
+      "EV-00415",
+      "EV-00416",
+      "EV-00417",
+      "EV-00418",
+      "EV-00419",
+      "EV-00420",
+      "EV-00421",
+      "EV-00422",
+      "EV-00423",
+      "EV-00425",
+      "EV-00426",
+      "EV-00427",
+      "EV-00428",
+      "EV-00429",
+      "EV-00430",
+      "EV-00431",
+      "EV-00432",
+      "EV-00433",
+      "EV-00434",
+      "EV-00437",
+      "EV-00438",
+      "EV-00439",
+      "EV-00440",
+      "EV-00441"
+    ],
+    "entities": [
+      "203.0.113.66",
+      "WEB-PORTAL-01",
+      "10.10.1.10"
+    ],
+    "confidence": "high",
+    "status": "verified",
+    "verification": {
+      "checks": [
+        {
+          "name": "evidence_exists",
+          "passed": true,
+          "detail": "25 cited event(s) exist"
+        },
+        {
+          "name": "technique_valid",
+          "passed": true,
+          "detail": "technique T1595.002 is in ATT&CK Enterprise"
+        },
+        {
+          "name": "tactic_consistent",
+          "passed": true,
+          "detail": "tactic 'Reconnaissance' is valid for T1595.002"
+        },
+        {
+          "name": "entities_in_evidence",
+          "passed": true,
+          "detail": "all entities appear in cited evidence"
+        },
+        {
+          "name": "not_quarantined_only",
+          "passed": true,
+          "detail": "no cited events are quarantined"
+        },
+        {
+          "name": "llm_support",
+          "passed": true,
+          "detail": "The cited events show 203.0.113.66 sending a rapid series of GET requests to WEB-PORTAL-01 (10.10.1.10) for admin, backup, config and API paths between 01:10 and 01:11 with the Nmap Scripting Engine user agent, returning mostly 404 with some 301 and 403."
+        }
+      ],
+      "verdict_reason": "Hard checks passed; AI support check: supported.",
+      "verified_at": "2026-11-08T01:13:05Z"
+    },
+    "origin": "investigator",
+    "first_seen": "2026-11-03T01:10:04.000Z",
+    "last_seen": "2026-11-03T01:11:33.000Z"
+  },
+  {
+    "id": "F-002",
+    "title": "SQL injection against /login.aspx from 203.0.113.66",
+    "summary": "At 01:19 on 2026-11-03, sqlmap/1.7.8 sent SQL injection payloads (OR '1'='1 and UNION SELECT) to /login.aspx on WEB-PORTAL-01. The server returned 500 for the first two requests and 302 for the OR '1'='1 request.",
+    "tactic": "Initial Access",
+    "technique_id": "T1190",
+    "technique_name": "Exploit Public-Facing Application",
+    "evidence_ids": [
+      "EV-00505",
+      "EV-00506",
+      "EV-00510"
+    ],
+    "entities": [
+      "203.0.113.66",
+      "WEB-PORTAL-01",
+      "sqlmap/1.7.8#stable"
+    ],
+    "confidence": "high",
+    "status": "verified",
+    "verification": {
+      "checks": [
+        {
+          "name": "evidence_exists",
+          "passed": true,
+          "detail": "3 cited event(s) exist"
+        },
+        {
+          "name": "technique_valid",
+          "passed": true,
+          "detail": "technique T1190 is in ATT&CK Enterprise"
+        },
+        {
+          "name": "tactic_consistent",
+          "passed": true,
+          "detail": "tactic 'Initial Access' is valid for T1190"
+        },
+        {
+          "name": "entities_in_evidence",
+          "passed": true,
+          "detail": "all entities appear in cited evidence"
+        },
+        {
+          "name": "not_quarantined_only",
+          "passed": true,
+          "detail": "no cited events are quarantined"
+        },
+        {
+          "name": "llm_support",
+          "passed": true,
+          "detail": "Events EV-00505 and EV-00506 show sqlmap/1.7.8 requests with OR '1'='1 and UNION SELECT payloads to /login.aspx returning 500, and EV-00510 shows the OR '1'='1' request returning 302."
+        }
+      ],
+      "verdict_reason": "Hard checks passed; AI support check: supported.",
+      "verified_at": "2026-11-08T01:13:05Z"
+    },
+    "origin": "investigator",
+    "first_seen": "2026-11-03T01:19:21.000Z",
+    "last_seen": "2026-11-03T01:19:58.000Z"
+  },
+  {
+    "id": "F-003",
+    "title": "Web shell img_upd.aspx uploaded and used with cmd= parameters",
+    "summary": "At 01:31 on 2026-11-03, 203.0.113.66 POSTed to /shipments/upload.aspx?name=img_upd.aspx on WEB-PORTAL-01 and received 200. From 01:33 to 02:04 the same client requested /img_upd.aspx with cmd= values (ipconfig /all, net user, dir, encoded powershell, rundll32 comsvcs MiniDump), and each request returned 200.",
+    "tactic": "Persistence",
+    "technique_id": "T1505.003",
+    "technique_name": "Web Shell",
+    "evidence_ids": [
+      "EV-00569",
+      "EV-00578",
+      "EV-00599",
+      "EV-00631",
+      "EV-00669",
+      "EV-00720",
+      "EV-00786"
+    ],
+    "entities": [
+      "203.0.113.66",
+      "WEB-PORTAL-01",
+      "img_upd.aspx"
+    ],
+    "confidence": "high",
+    "status": "verified",
+    "verification": {
+      "checks": [
+        {
+          "name": "evidence_exists",
+          "passed": true,
+          "detail": "7 cited event(s) exist"
+        },
+        {
+          "name": "technique_valid",
+          "passed": true,
+          "detail": "technique T1505.003 is in ATT&CK Enterprise"
+        },
+        {
+          "name": "tactic_consistent",
+          "passed": true,
+          "detail": "tactic 'Persistence' is valid for T1505.003"
+        },
+        {
+          "name": "entities_in_evidence",
+          "passed": true,
+          "detail": "all entities appear in cited evidence"
+        },
+        {
+          "name": "not_quarantined_only",
+          "passed": true,
+          "detail": "no cited events are quarantined"
+        },
+        {
+          "name": "llm_support",
+          "passed": true,
+          "detail": "EV-00569 shows a POST to /shipments/upload.aspx?name=img_upd.aspx returning 200, and EV-00578, EV-00599, EV-00631, EV-00669, EV-00720 and EV-00786 show GET requests to /img_upd.aspx with the cmd values listed, all returning 200 between 01:33 and 02:04."
+        }
+      ],
+      "verdict_reason": "Hard checks passed; AI support check: supported.",
+      "verified_at": "2026-11-08T01:13:05Z"
+    },
+    "origin": "investigator",
+    "first_seen": "2026-11-03T01:31:55.000Z",
+    "last_seen": "2026-11-03T02:04:15.000Z"
+  },
+  {
+    "id": "F-004",
+    "title": "w3wp.exe spawned cmd.exe under LOGISTIK\\svc_web",
+    "summary": "The IIS worker process w3wp.exe on WEB-PORTAL-01 created cmd.exe as LOGISTIK\\svc_web for each web shell command: whoami, ipconfig /all, net user k.hafiz /domain, dir D:\\Shares\\Logistik, and the rundll32 comsvcs.dll MiniDump command.",
+    "tactic": "Execution",
+    "technique_id": "T1059.003",
+    "technique_name": "Windows Command Shell",
+    "evidence_ids": [
+      "EV-00581",
+      "EV-00600",
+      "EV-00632",
+      "EV-00670",
+      "EV-00788"
+    ],
+    "entities": [
+      "w3wp.exe",
+      "cmd.exe",
+      "LOGISTIK\\svc_web",
+      "WEB-PORTAL-01"
+    ],
+    "confidence": "high",
+    "status": "verified",
+    "verification": {
+      "checks": [
+        {
+          "name": "evidence_exists",
+          "passed": true,
+          "detail": "5 cited event(s) exist"
+        },
+        {
+          "name": "technique_valid",
+          "passed": true,
+          "detail": "technique T1059.003 is in ATT&CK Enterprise"
+        },
+        {
+          "name": "tactic_consistent",
+          "passed": true,
+          "detail": "tactic 'Execution' is valid for T1059.003"
+        },
+        {
+          "name": "entities_in_evidence",
+          "passed": true,
+          "detail": "all entities appear in cited evidence"
+        },
+        {
+          "name": "not_quarantined_only",
+          "passed": true,
+          "detail": "no cited events are quarantined"
+        },
+        {
+          "name": "llm_support",
+          "passed": true,
+          "detail": "Sysmon events EV-00581, EV-00600, EV-00632, EV-00670 and EV-00788 show cmd.exe processes created by parent w3wp.exe as LOGISTIK\\svc_web with the whoami, ipconfig /all, net user, dir and rundll32 comsvcs MiniDump command lines."
+        }
+      ],
+      "verdict_reason": "Hard checks passed; AI support check: supported.",
+      "verified_at": "2026-11-08T01:13:05Z"
+    },
+    "origin": "investigator",
+    "first_seen": "2026-11-03T01:33:41.872Z",
+    "last_seen": "2026-11-03T02:04:15.233Z"
+  },
+  {
+    "id": "F-005",
+    "title": "Domain account and share discovery through the web shell",
+    "summary": "Through the web shell, svc_web ran net user k.hafiz /domain at 01:38 and cmd /c dir D:\\Shares\\Logistik at 01:44 on WEB-PORTAL-01. Both requests returned 200.",
+    "tactic": "Discovery",
+    "technique_id": "T1087.002",
+    "technique_name": "Domain Account",
+    "evidence_ids": [
+      "EV-00631",
+      "EV-00632",
+      "EV-00669",
+      "EV-00670"
+    ],
+    "entities": [
+      "LOGISTIK\\svc_web",
+      "k.hafiz",
+      "WEB-PORTAL-01",
+      "D:\\Shares\\Logistik"
+    ],
+    "confidence": "high",
+    "status": "verified",
+    "verification": {
+      "checks": [
+        {
+          "name": "evidence_exists",
+          "passed": true,
+          "detail": "4 cited event(s) exist"
+        },
+        {
+          "name": "technique_valid",
+          "passed": true,
+          "detail": "technique T1087.002 is in ATT&CK Enterprise"
+        },
+        {
+          "name": "tactic_consistent",
+          "passed": true,
+          "detail": "tactic 'Discovery' is valid for T1087.002"
+        },
+        {
+          "name": "entities_in_evidence",
+          "passed": true,
+          "detail": "all entities appear in cited evidence"
+        },
+        {
+          "name": "not_quarantined_only",
+          "passed": true,
+          "detail": "no cited events are quarantined"
+        },
+        {
+          "name": "llm_support",
+          "passed": true,
+          "detail": "EV-00631 and EV-00632 show the net user k.hafiz /domain request and its cmd.exe child running as svc_web at 01:38, and EV-00669 and EV-00670 show the dir D:\\Shares\\Logistik request and cmd.exe process at 01:44, both with 200 responses on the web request."
+        }
+      ],
+      "verdict_reason": "Hard checks passed; AI support check: supported.",
+      "verified_at": "2026-11-08T01:13:05Z"
+    },
+    "origin": "investigator",
+    "first_seen": "2026-11-03T01:38:50.000Z",
+    "last_seen": "2026-11-03T01:44:20.611Z"
+  },
+  {
+    "id": "F-006",
+    "title": "Encoded PowerShell launched by w3wp.exe on WEB-PORTAL-01",
+    "summary": "At 01:52:03 w3wp.exe started powershell.exe as LOGISTIK\\svc_web with -nop -w hidden -enc and a Base64 encoded command. The decoded content is not available in these records, so only the launch is reported.",
+    "tactic": "Execution",
+    "technique_id": "T1059.001",
+    "technique_name": "PowerShell",
+    "evidence_ids": [
+      "EV-00720",
+      "EV-00721"
+    ],
+    "entities": [
+      "w3wp.exe",
+      "powershell.exe",
+      "LOGISTIK\\svc_web",
+      "WEB-PORTAL-01"
+    ],
+    "confidence": "high",
+    "status": "verified",
+    "verification": {
+      "checks": [
+        {
+          "name": "evidence_exists",
+          "passed": true,
+          "detail": "2 cited event(s) exist"
+        },
+        {
+          "name": "technique_valid",
+          "passed": true,
+          "detail": "technique T1059.001 is in ATT&CK Enterprise"
+        },
+        {
+          "name": "tactic_consistent",
+          "passed": true,
+          "detail": "tactic 'Execution' is valid for T1059.001"
+        },
+        {
+          "name": "entities_in_evidence",
+          "passed": true,
+          "detail": "all entities appear in cited evidence"
+        },
+        {
+          "name": "not_quarantined_only",
+          "passed": true,
+          "detail": "no cited events are quarantined"
+        },
+        {
+          "name": "llm_support",
+          "passed": true,
+          "detail": "EV-00721 shows sysmon process_create of powershell.exe with parent w3wp.exe, user LOGISTIK\\svc_web, and command line -nop -w hidden -enc with a Base64 payload at 01:52:03, matching the claim; EV-00720 shows the triggering request returning 200."
+        }
+      ],
+      "verdict_reason": "Hard checks passed; AI support check: supported.",
+      "verified_at": "2026-11-08T01:13:05Z"
+    },
+    "origin": "investigator",
+    "first_seen": "2026-11-03T01:52:03.000Z",
+    "last_seen": "2026-11-03T01:52:03.118Z"
+  },
+  {
+    "id": "F-007",
+    "title": "Encoded PowerShell on WEB-PORTAL-01 connected to 198.51.100.77:443",
+    "summary": "Shortly after the encoded PowerShell launch, powershell.exe (PID 4188) running as LOGISTIK\\svc_web on WEB-PORTAL-01 opened a connection to 198.51.100.77 on port 443 at 01:52:40.",
+    "tactic": "Command and Control",
+    "technique_id": "T1071.001",
+    "technique_name": "Web Protocols",
+    "evidence_ids": [
+      "EV-00724",
+      "EV-00721"
+    ],
+    "entities": [
+      "powershell.exe",
+      "LOGISTIK\\svc_web",
+      "WEB-PORTAL-01",
+      "198.51.100.77"
+    ],
+    "confidence": "medium",
+    "status": "verified",
+    "verification": {
+      "checks": [
+        {
+          "name": "evidence_exists",
+          "passed": true,
+          "detail": "2 cited event(s) exist"
+        },
+        {
+          "name": "technique_valid",
+          "passed": true,
+          "detail": "technique T1071.001 is in ATT&CK Enterprise"
+        },
+        {
+          "name": "tactic_consistent",
+          "passed": true,
+          "detail": "tactic 'Command and Control' is valid for T1071.001"
+        },
+        {
+          "name": "entities_in_evidence",
+          "passed": true,
+          "detail": "all entities appear in cited evidence"
+        },
+        {
+          "name": "not_quarantined_only",
+          "passed": true,
+          "detail": "no cited events are quarantined"
+        },
+        {
+          "name": "llm_support",
+          "passed": true,
+          "detail": "EV-00721 shows encoded powershell.exe launched by w3wp.exe (PID 4188), and EV-00724 shows PID 4188 as powershell.exe on WEB-PORTAL-01 connecting to 198.51.100.77:443 at 01:52:40."
+        }
+      ],
+      "verdict_reason": "Hard checks passed; AI support check: supported.",
+      "verified_at": "2026-11-08T01:13:05Z"
+    },
+    "origin": "investigator",
+    "first_seen": "2026-11-03T01:52:03.118Z",
+    "last_seen": "2026-11-03T01:52:40.402Z"
+  },
+  {
+    "id": "F-008",
+    "title": "LSASS memory access via comsvcs MiniDump on WEB-PORTAL-01",
+    "summary": "At 02:04 cmd.exe spawned rundll32.exe with comsvcs.dll MiniDump against PID 648 writing C:\\Users\\Public\\lsass.dmp. rundll32.exe (PID 4241) then opened lsass.exe with GrantedAccess 0x1FFFFF, and the file lsass.dmp was created. The records do not show the dump contents, so exposed credentials cannot be confirmed from these events.",
+    "tactic": "Credential Access",
+    "technique_id": "T1003.001",
+    "technique_name": "LSASS Memory",
+    "evidence_ids": [
+      "EV-00786",
+      "EV-00788",
+      "EV-00789",
+      "EV-00790",
+      "EV-00791"
+    ],
+    "entities": [
+      "rundll32.exe",
+      "lsass.exe",
+      "LOGISTIK\\svc_web",
+      "WEB-PORTAL-01",
+      "C:\\Users\\Public\\lsass.dmp"
+    ],
+    "confidence": "high",
+    "status": "verified",
+    "verification": {
+      "checks": [
+        {
+          "name": "evidence_exists",
+          "passed": true,
+          "detail": "5 cited event(s) exist"
+        },
+        {
+          "name": "technique_valid",
+          "passed": true,
+          "detail": "technique T1003.001 is in ATT&CK Enterprise"
+        },
+        {
+          "name": "tactic_consistent",
+          "passed": true,
+          "detail": "tactic 'Credential Access' is valid for T1003.001"
+        },
+        {
+          "name": "entities_in_evidence",
+          "passed": true,
+          "detail": "all entities appear in cited evidence"
+        },
+        {
+          "name": "not_quarantined_only",
+          "passed": true,
+          "detail": "no cited events are quarantined"
+        },
+        {
+          "name": "llm_support",
+          "passed": true,
+          "detail": "EV-00786 shows the web request triggering cmd, EV-00788/EV-00789 show cmd spawning rundll32 with comsvcs MiniDump against PID 648 to lsass.dmp, EV-00790 shows rundll32 (PID 4241) accessing lsass.exe with 0x1FFFFF, and EV-00791 shows lsass.dmp created; the finding itself correctly notes dump contents are not shown."
+        }
+      ],
+      "verdict_reason": "Hard checks passed; AI support check: supported.",
+      "verified_at": "2026-11-08T01:13:05Z"
+    },
+    "origin": "investigator",
+    "first_seen": "2026-11-03T02:04:15.000Z",
+    "last_seen": "2026-11-03T02:04:17.205Z"
+  },
+  {
+    "id": "F-009",
+    "title": "Explicit-credential logon from WEB-PORTAL-01 to FS-LOGISTIK-01 as LOGISTIK\\k.hafiz",
+    "summary": "At 02:21:33 LOGISTIK\\k.hafiz made an explicit-credential logon from WEB-PORTAL-01 (10.10.1.10) to FS-LOGISTIK-01 (10.10.3.20). FS-LOGISTIK-01 recorded a successful type 3 logon for the same account from 10.10.1.10 two seconds later.",
+    "tactic": "Privilege Escalation",
+    "technique_id": "T1078",
+    "technique_name": "Valid Accounts",
+    "evidence_ids": [
+      "EV-00895",
+      "EV-00896"
+    ],
+    "entities": [
+      "LOGISTIK\\k.hafiz",
+      "WEB-PORTAL-01",
+      "FS-LOGISTIK-01",
+      "10.10.1.10",
+      "10.10.3.20"
+    ],
+    "confidence": "high",
+    "status": "verified",
+    "verification": {
+      "checks": [
+        {
+          "name": "evidence_exists",
+          "passed": true,
+          "detail": "2 cited event(s) exist"
+        },
+        {
+          "name": "technique_valid",
+          "passed": true,
+          "detail": "technique T1078 is in ATT&CK Enterprise"
+        },
+        {
+          "name": "tactic_consistent",
+          "passed": true,
+          "detail": "tactic 'Privilege Escalation' is valid for T1078"
+        },
+        {
+          "name": "entities_in_evidence",
+          "passed": true,
+          "detail": "all entities appear in cited evidence"
+        },
+        {
+          "name": "not_quarantined_only",
+          "passed": true,
+          "detail": "no cited events are quarantined"
+        },
+        {
+          "name": "llm_support",
+          "passed": true,
+          "detail": "EV-00895 records a 4648 explicit-credential logon by LOGISTIK\\k.hafiz from WEB-PORTAL-01 to FS-LOGISTIK-01, and EV-00896 shows a successful type 3 logon for the same account from 10.10.1.10 two seconds later."
+        }
+      ],
+      "verdict_reason": "Hard checks passed; AI support check: supported.",
+      "verified_at": "2026-11-08T01:13:05Z"
+    },
+    "origin": "investigator",
+    "first_seen": "2026-11-03T02:21:33.000Z",
+    "last_seen": "2026-11-03T02:21:35.000Z"
+  },
+  {
+    "id": "F-010",
+    "title": "Administrative share ADMIN$ accessed on FS-LOGISTIK-01 from 10.10.1.10",
+    "summary": "At 02:21:38 FS-LOGISTIK-01 recorded access to \\\\*\\ADMIN$ from 10.10.1.10 under LOGISTIK\\k.hafiz.",
+    "tactic": "Lateral Movement",
+    "technique_id": "T1021.002",
+    "technique_name": "SMB/Windows Admin Shares",
+    "evidence_ids": [
+      "EV-00897"
+    ],
+    "entities": [
+      "FS-LOGISTIK-01",
+      "LOGISTIK\\k.hafiz",
+      "10.10.1.10",
+      "ADMIN$"
+    ],
+    "confidence": "high",
+    "status": "verified",
+    "verification": {
+      "checks": [
+        {
+          "name": "evidence_exists",
+          "passed": true,
+          "detail": "1 cited event(s) exist"
+        },
+        {
+          "name": "technique_valid",
+          "passed": true,
+          "detail": "technique T1021.002 is in ATT&CK Enterprise"
+        },
+        {
+          "name": "tactic_consistent",
+          "passed": true,
+          "detail": "tactic 'Lateral Movement' is valid for T1021.002"
+        },
+        {
+          "name": "entities_in_evidence",
+          "passed": true,
+          "detail": "all entities appear in cited evidence"
+        },
+        {
+          "name": "not_quarantined_only",
+          "passed": true,
+          "detail": "no cited events are quarantined"
+        },
+        {
+          "name": "llm_support",
+          "passed": true,
+          "detail": "EV-00897 shows a 5140 access to \\\\*\\ADMIN$ on FS-LOGISTIK-01 from 10.10.1.10 under LOGISTIK\\k.hafiz."
+        }
+      ],
+      "verdict_reason": "Hard checks passed; AI support check: supported.",
+      "verified_at": "2026-11-08T01:13:05Z"
+    },
+    "origin": "investigator",
+    "first_seen": "2026-11-03T02:21:38.000Z",
+    "last_seen": "2026-11-03T02:21:38.000Z"
+  },
+  {
+    "id": "F-011",
+    "title": "PsExec service installed and started on FS-LOGISTIK-01",
+    "summary": "At 02:21:40 PSEXESVC was installed on FS-LOGISTIK-01 from C:\\Windows\\PSEXESVC.exe and started under services.exe. At 02:22:02 a cmd.exe was spawned by psexesvc.exe in the context of LOGISTIK\\k.hafiz.",
+    "tactic": "Execution",
+    "technique_id": "T1569.002",
+    "technique_name": "Service Execution",
+    "evidence_ids": [
+      "EV-00898",
+      "EV-00899",
+      "EV-00902"
+    ],
+    "entities": [
+      "FS-LOGISTIK-01",
+      "psexesvc.exe",
+      "LOGISTIK\\k.hafiz",
+      "C:\\Windows\\PSEXESVC.exe"
+    ],
+    "confidence": "high",
+    "status": "verified",
+    "verification": {
+      "checks": [
+        {
+          "name": "evidence_exists",
+          "passed": true,
+          "detail": "3 cited event(s) exist"
+        },
+        {
+          "name": "technique_valid",
+          "passed": true,
+          "detail": "technique T1569.002 is in ATT&CK Enterprise"
+        },
+        {
+          "name": "tactic_consistent",
+          "passed": true,
+          "detail": "tactic 'Execution' is valid for T1569.002"
+        },
+        {
+          "name": "entities_in_evidence",
+          "passed": true,
+          "detail": "all entities appear in cited evidence"
+        },
+        {
+          "name": "not_quarantined_only",
+          "passed": true,
+          "detail": "no cited events are quarantined"
+        },
+        {
+          "name": "llm_support",
+          "passed": true,
+          "detail": "EV-00898 records PSEXESVC service installation from C:\\Windows\\PSEXESVC.exe, EV-00899 shows it started by services.exe, and EV-00902 shows cmd.exe spawned by psexesvc.exe as LOGISTIK\\k.hafiz at 02:22:02."
+        }
+      ],
+      "verdict_reason": "Hard checks passed; AI support check: supported.",
+      "verified_at": "2026-11-08T01:13:05Z"
+    },
+    "origin": "investigator",
+    "first_seen": "2026-11-03T02:21:40.000Z",
+    "last_seen": "2026-11-03T02:22:02.774Z"
+  },
+  {
+    "id": "F-012",
+    "title": "Archive staging with 7z.exe on FS-LOGISTIK-01",
+    "summary": "At 02:40 cmd.exe launched 7z.exe as LOGISTIK\\k.hafiz to create C:\\Users\\Public\\q4.7z from D:\\Shares\\Logistik\\Jadual_Penghantaran_Q4\\*, with a password switch (-pP@ss) visible on the command line. The archive file q4.7z was created at 02:41.",
+    "tactic": "Collection",
+    "technique_id": "T1560.001",
+    "technique_name": "Archive via Utility",
+    "evidence_ids": [
+      "EV-01010",
+      "EV-01015"
+    ],
+    "entities": [
+      "7z.exe",
+      "cmd.exe",
+      "LOGISTIK\\k.hafiz",
+      "FS-LOGISTIK-01",
+      "C:\\Users\\Public\\q4.7z"
+    ],
+    "confidence": "high",
+    "status": "verified",
+    "verification": {
+      "checks": [
+        {
+          "name": "evidence_exists",
+          "passed": true,
+          "detail": "2 cited event(s) exist"
+        },
+        {
+          "name": "technique_valid",
+          "passed": true,
+          "detail": "technique T1560.001 is in ATT&CK Enterprise"
+        },
+        {
+          "name": "tactic_consistent",
+          "passed": true,
+          "detail": "tactic 'Collection' is valid for T1560.001"
+        },
+        {
+          "name": "entities_in_evidence",
+          "passed": true,
+          "detail": "all entities appear in cited evidence"
+        },
+        {
+          "name": "not_quarantined_only",
+          "passed": true,
+          "detail": "no cited events are quarantined"
+        },
+        {
+          "name": "llm_support",
+          "passed": true,
+          "detail": "EV-01010 shows 7z.exe launched by cmd.exe as LOGISTIK\\k.hafiz with the -pP@ss switch and source D:\\Shares\\Logistik\\Jadual_Penghantaran_Q4\\*, and EV-01015 shows C:\\Users\\Public\\q4.7z created at 02:41. Note: the finding says 'cmd.exe launched 7z.exe', which matches the parent; the cited events do not spell out 'at 02:40' precisely but 02:40:05 is consistent."
+        }
+      ],
+      "verdict_reason": "Hard checks passed; AI support check: supported.",
+      "verified_at": "2026-11-08T01:13:05Z"
+    },
+    "origin": "investigator",
+    "first_seen": "2026-11-03T02:40:05.530Z",
+    "last_seen": "2026-11-03T02:41:02.887Z"
+  },
+  {
+    "id": "F-013",
+    "title": "Outbound upload of q4.7z to 198.51.100.77 (~432 MB)",
+    "summary": "At 03:18 curl.exe under cmd.exe, running as LOGISTIK\\k.hafiz on FS-LOGISTIK-01, uploaded C:\\Users\\Public\\q4.7z with -T to https://198.51.100.77/u, and connected to 198.51.100.77:443 from 10.10.3.20. PA-FW-01 logged an allowed session to 198.51.100.77 port 443 at 03:44 with 412 MB (432013312 bytes) sent.",
+    "tactic": "Exfiltration",
+    "technique_id": "T1041",
+    "technique_name": "Exfiltration Over C2 Channel",
+    "evidence_ids": [
+      "EV-01245",
+      "EV-01246",
+      "EV-01413"
+    ],
+    "entities": [
+      "curl.exe",
+      "LOGISTIK\\k.hafiz",
+      "FS-LOGISTIK-01",
+      "10.10.3.20",
+      "198.51.100.77",
+      "PA-FW-01",
+      "C:\\Users\\Public\\q4.7z"
+    ],
+    "confidence": "high",
+    "status": "verified",
+    "verification": {
+      "checks": [
+        {
+          "name": "evidence_exists",
+          "passed": true,
+          "detail": "3 cited event(s) exist"
+        },
+        {
+          "name": "technique_valid",
+          "passed": true,
+          "detail": "technique T1041 is in ATT&CK Enterprise"
+        },
+        {
+          "name": "tactic_consistent",
+          "passed": true,
+          "detail": "tactic 'Exfiltration' is valid for T1041"
+        },
+        {
+          "name": "entities_in_evidence",
+          "passed": true,
+          "detail": "all entities appear in cited evidence"
+        },
+        {
+          "name": "not_quarantined_only",
+          "passed": true,
+          "detail": "no cited events are quarantined"
+        },
+        {
+          "name": "llm_support",
+          "passed": true,
+          "detail": "EV-01245 shows curl.exe under cmd.exe by LOGISTIK\\k.hafiz on FS-LOGISTIK-01 uploading C:\\Users\\Public\\q4.7z with -T to 198.51.100.77, EV-01246 shows the connection to 198.51.100.77:443 from 10.10.3.20, and EV-01413 shows the firewall allowed session with 432013312 bytes sent; the ~432 MB size and 03:44 firewall timing match the cited events."
+        }
+      ],
+      "verdict_reason": "Hard checks passed; AI support check: supported.",
+      "verified_at": "2026-11-08T01:13:05Z"
+    },
+    "origin": "investigator",
+    "first_seen": "2026-11-03T03:18:20.301Z",
+    "last_seen": "2026-11-03T03:44:12.000Z"
+  },
+  {
+    "id": "F-TEST-001",
+    "title": "Self-test: fabricated lateral movement claim",
+    "summary": "Deliberately false claim that proves the verifier rejects unsupported findings. It cites an event id that does not exist and a technique that is not in ATT&CK.",
+    "tactic": "Lateral Movement",
+    "technique_id": "T1999.999",
+    "technique_name": "Fabricated Technique",
+    "evidence_ids": [
+      "EV-99999",
+      "EV-01070"
+    ],
+    "entities": [
+      "FAKE-HOST-99"
+    ],
+    "confidence": "high",
+    "status": "rejected",
+    "verification": {
+      "checks": [
+        {
+          "name": "evidence_exists",
+          "passed": false,
+          "detail": "unknown evidence id(s): EV-99999"
+        },
+        {
+          "name": "technique_valid",
+          "passed": false,
+          "detail": "technique T1999.999 does not exist in ATT&CK"
+        },
+        {
+          "name": "tactic_consistent",
+          "passed": false,
+          "detail": "tactic 'Lateral Movement' cannot be checked: T1999.999 is unknown"
+        },
+        {
+          "name": "entities_in_evidence",
+          "passed": false,
+          "detail": "none of the entities were found in the cited evidence: FAKE-HOST-99"
+        },
+        {
+          "name": "not_quarantined_only",
+          "passed": true,
+          "detail": "no cited events are quarantined"
+        }
+      ],
+      "verdict_reason": "Hard check failed: unknown evidence id(s): EV-99999",
+      "verified_at": "2026-11-08T01:13:59Z"
+    },
+    "origin": "self_test",
+    "first_seen": null,
+    "last_seen": null
+  },
+  {
+    "id": "F-TEST-002",
+    "title": "Self-test: fabricated lateral movement claim",
+    "summary": "Deliberately false claim that proves the verifier rejects unsupported findings. It cites an event id that does not exist and a technique that is not in ATT&CK.",
+    "tactic": "Lateral Movement",
+    "technique_id": "T1999.999",
+    "technique_name": "Fabricated Technique",
+    "evidence_ids": [
+      "EV-99999",
+      "EV-01070"
+    ],
+    "entities": [
+      "FAKE-HOST-99"
+    ],
+    "confidence": "high",
+    "status": "rejected",
+    "verification": {
+      "checks": [
+        {
+          "name": "evidence_exists",
+          "passed": false,
+          "detail": "unknown evidence id(s): EV-99999"
+        },
+        {
+          "name": "technique_valid",
+          "passed": false,
+          "detail": "technique T1999.999 does not exist in ATT&CK"
+        },
+        {
+          "name": "tactic_consistent",
+          "passed": false,
+          "detail": "tactic 'Lateral Movement' cannot be checked: T1999.999 is unknown"
+        },
+        {
+          "name": "entities_in_evidence",
+          "passed": false,
+          "detail": "none of the entities were found in the cited evidence: FAKE-HOST-99"
+        },
+        {
+          "name": "not_quarantined_only",
+          "passed": true,
+          "detail": "no cited events are quarantined"
+        }
+      ],
+      "verdict_reason": "Hard check failed: unknown evidence id(s): EV-99999",
+      "verified_at": "2026-11-09T06:06:42Z"
+    },
+    "origin": "self_test",
+    "first_seen": null,
+    "last_seen": null
+  }
+]

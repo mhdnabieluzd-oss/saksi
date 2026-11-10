@@ -1,0 +1,1212 @@
+[
+  {
+    "id": "BENCH-004",
+    "case_id": "CASE-2026-0001",
+    "scenario_id": "hq-breach",
+    "workflow": "fixed_baseline",
+    "model": "deterministic-rules-only",
+    "evaluated_at": "2026-11-10T02:27:04Z",
+    "manifest": {
+      "scenario_id": "hq-breach",
+      "name": "Markas Logistik Multi-Layer HQ Breach (Synthetic Scenario)",
+      "dataset_source": "SAKSI Synthetic Multi-Layer Telemetry (1 curated scenario in repo)",
+      "telemetry_layers": [
+        "Web Access Logs (HTTP/IIS)",
+        "Windows Sysmon (Process/File/Network)",
+        "Enterprise SIEM (Auth/SMB/Firewall)"
+      ],
+      "license": "MIT / Training & Evaluation Use",
+      "event_count": 2138,
+      "expected_techniques": 12,
+      "expected_entities": [
+        "203.0.113.66",
+        "198.51.100.77",
+        "WEB-PORTAL-01",
+        "FS-LOGISTIK-01",
+        "LOGISTIK\\svc_web",
+        "LOGISTIK\\k.hafiz",
+        "w3wp.exe",
+        "powershell.exe",
+        "rundll32.exe",
+        "lsass.exe",
+        "psexesvc.exe",
+        "7z.exe"
+      ],
+      "limitations": "Single synthetic deterministic multi-host scenario (2,138 events, 12 expected ATT&CK techniques) with 1 planted indirect prompt injection (EV-00580). Measures recall and citation grounding on this scenario only."
+    },
+    "metrics": {
+      "true_positives": 11,
+      "false_positives": 0,
+      "false_negatives": 1,
+      "precision": 1.0,
+      "recall": 0.917,
+      "f1": 0.957,
+      "false_positives_per_case": 0.0,
+      "evidence_grounding_precision": 1.0,
+      "evidence_citation_precision": 1.0,
+      "evidence_coverage": 1.0,
+      "time_to_first_finding_ms": null,
+      "investigation_completion_ms": 5000,
+      "tool_calls_total": 0,
+      "blocked_tool_requests": 0,
+      "verifier_rejection_rate": 0.0
+    },
+    "per_technique": [
+      {
+        "technique_id": "T1595.002",
+        "technique_name": "Vulnerability Scanning",
+        "tactic": "Reconnaissance",
+        "expected_event_ids": [
+          "EV-00415",
+          "EV-00416",
+          "EV-00417",
+          "EV-00418",
+          "EV-00419",
+          "EV-00420",
+          "EV-00421",
+          "EV-00425",
+          "EV-00426",
+          "EV-00427"
+        ],
+        "predicted_finding_id": "F-BASE-001",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00415",
+          "EV-00416",
+          "EV-00417",
+          "EV-00418",
+          "EV-00419",
+          "EV-00420",
+          "EV-00421",
+          "EV-00425",
+          "EV-00426",
+          "EV-00427"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 32
+      },
+      {
+        "technique_id": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "expected_event_ids": [
+          "EV-00505",
+          "EV-00506",
+          "EV-00510"
+        ],
+        "predicted_finding_id": "F-BASE-002",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00505",
+          "EV-00506",
+          "EV-00510"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 3
+      },
+      {
+        "technique_id": "T1505.003",
+        "technique_name": "Web Shell",
+        "tactic": "Persistence",
+        "expected_event_ids": [
+          "EV-00569",
+          "EV-00580",
+          "EV-00599",
+          "EV-00631",
+          "EV-00669",
+          "EV-00720",
+          "EV-00786"
+        ],
+        "predicted_finding_id": "F-BASE-003",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00569",
+          "EV-00599",
+          "EV-00631",
+          "EV-00669",
+          "EV-00720",
+          "EV-00786"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 6
+      },
+      {
+        "technique_id": "T1059.001",
+        "technique_name": "PowerShell",
+        "tactic": "Execution",
+        "expected_event_ids": [
+          "EV-00721"
+        ],
+        "predicted_finding_id": "F-BASE-004",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00581",
+          "EV-00600",
+          "EV-00632",
+          "EV-00670",
+          "EV-00721",
+          "EV-00788"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 1
+      },
+      {
+        "technique_id": "T1059.003",
+        "technique_name": "Windows Command Shell",
+        "tactic": "Execution",
+        "expected_event_ids": [
+          "EV-00581",
+          "EV-00600",
+          "EV-00632",
+          "EV-00670",
+          "EV-00721",
+          "EV-00788"
+        ],
+        "predicted_finding_id": "F-BASE-004",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00581",
+          "EV-00600",
+          "EV-00632",
+          "EV-00670",
+          "EV-00721",
+          "EV-00788"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 6
+      },
+      {
+        "technique_id": "T1027",
+        "technique_name": "Obfuscated Files or Information",
+        "tactic": "Stealth",
+        "expected_event_ids": [],
+        "predicted_finding_id": null,
+        "predicted_status": null,
+        "cited_event_ids": [],
+        "matched": false,
+        "grounding_precision": 0.0,
+        "citation_overlap": 0
+      },
+      {
+        "technique_id": "T1003.001",
+        "technique_name": "LSASS Memory",
+        "tactic": "Credential Access",
+        "expected_event_ids": [
+          "EV-00788",
+          "EV-00789",
+          "EV-00790"
+        ],
+        "predicted_finding_id": "F-BASE-006",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00788",
+          "EV-00789",
+          "EV-00790"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 3
+      },
+      {
+        "technique_id": "T1078",
+        "technique_name": "Valid Accounts",
+        "tactic": "Privilege Escalation",
+        "expected_event_ids": [
+          "EV-00895",
+          "EV-00896"
+        ],
+        "predicted_finding_id": "F-BASE-007",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00895",
+          "EV-00896"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 2
+      },
+      {
+        "technique_id": "T1021.002",
+        "technique_name": "SMB/Windows Admin Shares",
+        "tactic": "Lateral Movement",
+        "expected_event_ids": [
+          "EV-00897"
+        ],
+        "predicted_finding_id": "F-BASE-008",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00897"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 1
+      },
+      {
+        "technique_id": "T1569.002",
+        "technique_name": "Service Execution",
+        "tactic": "Execution",
+        "expected_event_ids": [
+          "EV-00898",
+          "EV-00899"
+        ],
+        "predicted_finding_id": "F-BASE-009",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00898",
+          "EV-00899"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 2
+      },
+      {
+        "technique_id": "T1560.001",
+        "technique_name": "Archive via Utility",
+        "tactic": "Collection",
+        "expected_event_ids": [
+          "EV-01010"
+        ],
+        "predicted_finding_id": "F-BASE-010",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-01010"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 1
+      },
+      {
+        "technique_id": "T1041",
+        "technique_name": "Exfiltration Over C2 Channel",
+        "tactic": "Exfiltration",
+        "expected_event_ids": [
+          "EV-01413"
+        ],
+        "predicted_finding_id": "F-BASE-011",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-01413"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 1
+      }
+    ],
+    "notes": "Scenario result (Fixed rule baseline): 11/12 techniques matched (F1=0.957, Precision=1.000, Recall=0.917, grounding=100.0%); missed T1027."
+  },
+  {
+    "id": "BENCH-003",
+    "case_id": "CASE-2026-0001",
+    "scenario_id": "hq-breach",
+    "workflow": "autonomous_planner",
+    "model": "saksi-fast-workflow",
+    "evaluated_at": "2026-11-10T02:27:04Z",
+    "manifest": {
+      "scenario_id": "hq-breach",
+      "name": "Markas Logistik Multi-Layer HQ Breach (Synthetic Scenario)",
+      "dataset_source": "SAKSI Synthetic Multi-Layer Telemetry (1 curated scenario in repo)",
+      "telemetry_layers": [
+        "Web Access Logs (HTTP/IIS)",
+        "Windows Sysmon (Process/File/Network)",
+        "Enterprise SIEM (Auth/SMB/Firewall)"
+      ],
+      "license": "MIT / Training & Evaluation Use",
+      "event_count": 2138,
+      "expected_techniques": 12,
+      "expected_entities": [
+        "203.0.113.66",
+        "198.51.100.77",
+        "WEB-PORTAL-01",
+        "FS-LOGISTIK-01",
+        "LOGISTIK\\svc_web",
+        "LOGISTIK\\k.hafiz",
+        "w3wp.exe",
+        "powershell.exe",
+        "rundll32.exe",
+        "lsass.exe",
+        "psexesvc.exe",
+        "7z.exe"
+      ],
+      "limitations": "Single synthetic deterministic multi-host scenario (2,138 events, 12 expected ATT&CK techniques) with 1 planted indirect prompt injection (EV-00580). Measures recall and citation grounding on this scenario only."
+    },
+    "metrics": {
+      "true_positives": 11,
+      "false_positives": 0,
+      "false_negatives": 1,
+      "precision": 1.0,
+      "recall": 0.917,
+      "f1": 0.957,
+      "false_positives_per_case": 0.0,
+      "evidence_grounding_precision": 1.0,
+      "evidence_citation_precision": 1.0,
+      "evidence_coverage": 1.0,
+      "time_to_first_finding_ms": null,
+      "investigation_completion_ms": 5000,
+      "tool_calls_total": 15,
+      "blocked_tool_requests": 0,
+      "verifier_rejection_rate": 0.0
+    },
+    "per_technique": [
+      {
+        "technique_id": "T1595.002",
+        "technique_name": "Vulnerability Scanning",
+        "tactic": "Reconnaissance",
+        "expected_event_ids": [
+          "EV-00415",
+          "EV-00416",
+          "EV-00417",
+          "EV-00418",
+          "EV-00419",
+          "EV-00420",
+          "EV-00421",
+          "EV-00425",
+          "EV-00426",
+          "EV-00427"
+        ],
+        "predicted_finding_id": "F-001",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00414",
+          "EV-00415",
+          "EV-00416",
+          "EV-00417",
+          "EV-00418",
+          "EV-00419",
+          "EV-00420",
+          "EV-00421",
+          "EV-00422",
+          "EV-00423"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 20
+      },
+      {
+        "technique_id": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "expected_event_ids": [
+          "EV-00505",
+          "EV-00506",
+          "EV-00510"
+        ],
+        "predicted_finding_id": "F-002",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00505",
+          "EV-00506",
+          "EV-00510"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 3
+      },
+      {
+        "technique_id": "T1505.003",
+        "technique_name": "Web Shell",
+        "tactic": "Persistence",
+        "expected_event_ids": [
+          "EV-00569",
+          "EV-00580",
+          "EV-00599",
+          "EV-00631",
+          "EV-00669",
+          "EV-00720",
+          "EV-00786"
+        ],
+        "predicted_finding_id": "F-003",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00569",
+          "EV-00578",
+          "EV-00599",
+          "EV-00631",
+          "EV-00669",
+          "EV-00720",
+          "EV-00786"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 6
+      },
+      {
+        "technique_id": "T1059.001",
+        "technique_name": "PowerShell",
+        "tactic": "Execution",
+        "expected_event_ids": [
+          "EV-00721"
+        ],
+        "predicted_finding_id": "F-004",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00581",
+          "EV-00600",
+          "EV-00632",
+          "EV-00670",
+          "EV-00788"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 0
+      },
+      {
+        "technique_id": "T1059.003",
+        "technique_name": "Windows Command Shell",
+        "tactic": "Execution",
+        "expected_event_ids": [
+          "EV-00581",
+          "EV-00600",
+          "EV-00632",
+          "EV-00670",
+          "EV-00721",
+          "EV-00788"
+        ],
+        "predicted_finding_id": "F-004",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00581",
+          "EV-00600",
+          "EV-00632",
+          "EV-00670",
+          "EV-00788"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 5
+      },
+      {
+        "technique_id": "T1027",
+        "technique_name": "Obfuscated Files or Information",
+        "tactic": "Stealth",
+        "expected_event_ids": [],
+        "predicted_finding_id": null,
+        "predicted_status": null,
+        "cited_event_ids": [],
+        "matched": false,
+        "grounding_precision": 0.0,
+        "citation_overlap": 0
+      },
+      {
+        "technique_id": "T1003.001",
+        "technique_name": "LSASS Memory",
+        "tactic": "Credential Access",
+        "expected_event_ids": [
+          "EV-00788",
+          "EV-00789",
+          "EV-00790"
+        ],
+        "predicted_finding_id": "F-008",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00786",
+          "EV-00788",
+          "EV-00789",
+          "EV-00790",
+          "EV-00791"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 3
+      },
+      {
+        "technique_id": "T1078",
+        "technique_name": "Valid Accounts",
+        "tactic": "Privilege Escalation",
+        "expected_event_ids": [
+          "EV-00895",
+          "EV-00896"
+        ],
+        "predicted_finding_id": "F-009",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00895",
+          "EV-00896"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 2
+      },
+      {
+        "technique_id": "T1021.002",
+        "technique_name": "SMB/Windows Admin Shares",
+        "tactic": "Lateral Movement",
+        "expected_event_ids": [
+          "EV-00897"
+        ],
+        "predicted_finding_id": "F-010",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00897"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 1
+      },
+      {
+        "technique_id": "T1569.002",
+        "technique_name": "Service Execution",
+        "tactic": "Execution",
+        "expected_event_ids": [
+          "EV-00898",
+          "EV-00899"
+        ],
+        "predicted_finding_id": "F-011",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00898",
+          "EV-00899",
+          "EV-00902"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 2
+      },
+      {
+        "technique_id": "T1560.001",
+        "technique_name": "Archive via Utility",
+        "tactic": "Collection",
+        "expected_event_ids": [
+          "EV-01010"
+        ],
+        "predicted_finding_id": "F-012",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-01010",
+          "EV-01015"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 1
+      },
+      {
+        "technique_id": "T1041",
+        "technique_name": "Exfiltration Over C2 Channel",
+        "tactic": "Exfiltration",
+        "expected_event_ids": [
+          "EV-01413"
+        ],
+        "predicted_finding_id": "F-013",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-01245",
+          "EV-01246",
+          "EV-01413"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 1
+      }
+    ],
+    "notes": "Scenario result (Autonomous planner): 11/12 techniques matched (F1=0.957, Precision=1.000, Recall=0.917, grounding=100.0%); missed T1027."
+  },
+  {
+    "id": "BENCH-001",
+    "case_id": "CASE-2026-0001",
+    "scenario_id": "hq-breach",
+    "workflow": "autonomous_planner",
+    "model": "saksi-fast-workflow",
+    "evaluated_at": "2026-11-10T02:27:04Z",
+    "manifest": {
+      "scenario_id": "hq-breach",
+      "name": "Markas Logistik Multi-Layer HQ Breach (Synthetic Scenario)",
+      "dataset_source": "SAKSI Synthetic Multi-Layer Telemetry (1 curated scenario in repo)",
+      "telemetry_layers": [
+        "Web Access Logs (HTTP/IIS)",
+        "Windows Sysmon (Process/File/Network)",
+        "Enterprise SIEM (Auth/SMB/Firewall)"
+      ],
+      "license": "MIT / Training & Evaluation Use",
+      "event_count": 2138,
+      "expected_techniques": 12,
+      "expected_entities": [
+        "203.0.113.66",
+        "198.51.100.77",
+        "WEB-PORTAL-01",
+        "FS-LOGISTIK-01",
+        "LOGISTIK\\svc_web",
+        "LOGISTIK\\k.hafiz",
+        "w3wp.exe",
+        "powershell.exe",
+        "rundll32.exe",
+        "lsass.exe",
+        "psexesvc.exe",
+        "7z.exe"
+      ],
+      "limitations": "Single synthetic deterministic multi-host scenario (2,138 events, 12 expected ATT&CK techniques) with 1 planted indirect prompt injection (EV-00580). Measures recall and citation grounding on this scenario only."
+    },
+    "metrics": {
+      "true_positives": 11,
+      "false_positives": 0,
+      "false_negatives": 1,
+      "precision": 1.0,
+      "recall": 0.917,
+      "f1": 0.957,
+      "false_positives_per_case": 0.0,
+      "evidence_grounding_precision": 1.0,
+      "evidence_citation_precision": 1.0,
+      "evidence_coverage": 1.0,
+      "time_to_first_finding_ms": null,
+      "investigation_completion_ms": 5000,
+      "tool_calls_total": 15,
+      "blocked_tool_requests": 0,
+      "verifier_rejection_rate": 0.0
+    },
+    "per_technique": [
+      {
+        "technique_id": "T1595.002",
+        "technique_name": "Vulnerability Scanning",
+        "tactic": "Reconnaissance",
+        "expected_event_ids": [
+          "EV-00415",
+          "EV-00416",
+          "EV-00417",
+          "EV-00418",
+          "EV-00419",
+          "EV-00420",
+          "EV-00421",
+          "EV-00425",
+          "EV-00426",
+          "EV-00427"
+        ],
+        "predicted_finding_id": "F-001",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00414",
+          "EV-00415",
+          "EV-00416",
+          "EV-00417",
+          "EV-00418",
+          "EV-00419",
+          "EV-00420",
+          "EV-00421",
+          "EV-00422",
+          "EV-00423"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 20
+      },
+      {
+        "technique_id": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "expected_event_ids": [
+          "EV-00505",
+          "EV-00506",
+          "EV-00510"
+        ],
+        "predicted_finding_id": "F-002",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00505",
+          "EV-00506",
+          "EV-00510"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 3
+      },
+      {
+        "technique_id": "T1505.003",
+        "technique_name": "Web Shell",
+        "tactic": "Persistence",
+        "expected_event_ids": [
+          "EV-00569",
+          "EV-00580",
+          "EV-00599",
+          "EV-00631",
+          "EV-00669",
+          "EV-00720",
+          "EV-00786"
+        ],
+        "predicted_finding_id": "F-003",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00569",
+          "EV-00578",
+          "EV-00599",
+          "EV-00631",
+          "EV-00669",
+          "EV-00720",
+          "EV-00786"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 6
+      },
+      {
+        "technique_id": "T1059.001",
+        "technique_name": "PowerShell",
+        "tactic": "Execution",
+        "expected_event_ids": [
+          "EV-00721"
+        ],
+        "predicted_finding_id": "F-004",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00581",
+          "EV-00600",
+          "EV-00632",
+          "EV-00670",
+          "EV-00788"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 0
+      },
+      {
+        "technique_id": "T1059.003",
+        "technique_name": "Windows Command Shell",
+        "tactic": "Execution",
+        "expected_event_ids": [
+          "EV-00581",
+          "EV-00600",
+          "EV-00632",
+          "EV-00670",
+          "EV-00721",
+          "EV-00788"
+        ],
+        "predicted_finding_id": "F-004",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00581",
+          "EV-00600",
+          "EV-00632",
+          "EV-00670",
+          "EV-00788"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 5
+      },
+      {
+        "technique_id": "T1027",
+        "technique_name": "Obfuscated Files or Information",
+        "tactic": "Stealth",
+        "expected_event_ids": [],
+        "predicted_finding_id": null,
+        "predicted_status": null,
+        "cited_event_ids": [],
+        "matched": false,
+        "grounding_precision": 0.0,
+        "citation_overlap": 0
+      },
+      {
+        "technique_id": "T1003.001",
+        "technique_name": "LSASS Memory",
+        "tactic": "Credential Access",
+        "expected_event_ids": [
+          "EV-00788",
+          "EV-00789",
+          "EV-00790"
+        ],
+        "predicted_finding_id": "F-008",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00786",
+          "EV-00788",
+          "EV-00789",
+          "EV-00790",
+          "EV-00791"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 3
+      },
+      {
+        "technique_id": "T1078",
+        "technique_name": "Valid Accounts",
+        "tactic": "Privilege Escalation",
+        "expected_event_ids": [
+          "EV-00895",
+          "EV-00896"
+        ],
+        "predicted_finding_id": "F-009",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00895",
+          "EV-00896"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 2
+      },
+      {
+        "technique_id": "T1021.002",
+        "technique_name": "SMB/Windows Admin Shares",
+        "tactic": "Lateral Movement",
+        "expected_event_ids": [
+          "EV-00897"
+        ],
+        "predicted_finding_id": "F-010",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00897"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 1
+      },
+      {
+        "technique_id": "T1569.002",
+        "technique_name": "Service Execution",
+        "tactic": "Execution",
+        "expected_event_ids": [
+          "EV-00898",
+          "EV-00899"
+        ],
+        "predicted_finding_id": "F-011",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00898",
+          "EV-00899",
+          "EV-00902"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 2
+      },
+      {
+        "technique_id": "T1560.001",
+        "technique_name": "Archive via Utility",
+        "tactic": "Collection",
+        "expected_event_ids": [
+          "EV-01010"
+        ],
+        "predicted_finding_id": "F-012",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-01010",
+          "EV-01015"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 1
+      },
+      {
+        "technique_id": "T1041",
+        "technique_name": "Exfiltration Over C2 Channel",
+        "tactic": "Exfiltration",
+        "expected_event_ids": [
+          "EV-01413"
+        ],
+        "predicted_finding_id": "F-013",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-01245",
+          "EV-01246",
+          "EV-01413"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 1
+      }
+    ],
+    "notes": "Scenario result (Autonomous planner): 11/12 techniques matched (F1=0.957, Precision=1.000, Recall=0.917, grounding=100.0%); missed T1027."
+  },
+  {
+    "id": "BENCH-002",
+    "case_id": "CASE-2026-0001",
+    "scenario_id": "hq-breach",
+    "workflow": "fixed_baseline",
+    "model": "deterministic-rules-only",
+    "evaluated_at": "2026-11-10T02:27:04Z",
+    "manifest": {
+      "scenario_id": "hq-breach",
+      "name": "Markas Logistik Multi-Layer HQ Breach (Synthetic Scenario)",
+      "dataset_source": "SAKSI Synthetic Multi-Layer Telemetry (1 curated scenario in repo)",
+      "telemetry_layers": [
+        "Web Access Logs (HTTP/IIS)",
+        "Windows Sysmon (Process/File/Network)",
+        "Enterprise SIEM (Auth/SMB/Firewall)"
+      ],
+      "license": "MIT / Training & Evaluation Use",
+      "event_count": 2138,
+      "expected_techniques": 12,
+      "expected_entities": [
+        "203.0.113.66",
+        "198.51.100.77",
+        "WEB-PORTAL-01",
+        "FS-LOGISTIK-01",
+        "LOGISTIK\\svc_web",
+        "LOGISTIK\\k.hafiz",
+        "w3wp.exe",
+        "powershell.exe",
+        "rundll32.exe",
+        "lsass.exe",
+        "psexesvc.exe",
+        "7z.exe"
+      ],
+      "limitations": "Single synthetic deterministic multi-host scenario (2,138 events, 12 expected ATT&CK techniques) with 1 planted indirect prompt injection (EV-00580). Measures recall and citation grounding on this scenario only."
+    },
+    "metrics": {
+      "true_positives": 11,
+      "false_positives": 0,
+      "false_negatives": 1,
+      "precision": 1.0,
+      "recall": 0.917,
+      "f1": 0.957,
+      "false_positives_per_case": 0.0,
+      "evidence_grounding_precision": 1.0,
+      "evidence_citation_precision": 1.0,
+      "evidence_coverage": 1.0,
+      "time_to_first_finding_ms": null,
+      "investigation_completion_ms": 5000,
+      "tool_calls_total": 0,
+      "blocked_tool_requests": 0,
+      "verifier_rejection_rate": 0.0
+    },
+    "per_technique": [
+      {
+        "technique_id": "T1595.002",
+        "technique_name": "Vulnerability Scanning",
+        "tactic": "Reconnaissance",
+        "expected_event_ids": [
+          "EV-00415",
+          "EV-00416",
+          "EV-00417",
+          "EV-00418",
+          "EV-00419",
+          "EV-00420",
+          "EV-00421",
+          "EV-00425",
+          "EV-00426",
+          "EV-00427"
+        ],
+        "predicted_finding_id": "F-BASE-001",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00415",
+          "EV-00416",
+          "EV-00417",
+          "EV-00418",
+          "EV-00419",
+          "EV-00420",
+          "EV-00421",
+          "EV-00425",
+          "EV-00426",
+          "EV-00427"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 32
+      },
+      {
+        "technique_id": "T1190",
+        "technique_name": "Exploit Public-Facing Application",
+        "tactic": "Initial Access",
+        "expected_event_ids": [
+          "EV-00505",
+          "EV-00506",
+          "EV-00510"
+        ],
+        "predicted_finding_id": "F-BASE-002",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00505",
+          "EV-00506",
+          "EV-00510"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 3
+      },
+      {
+        "technique_id": "T1505.003",
+        "technique_name": "Web Shell",
+        "tactic": "Persistence",
+        "expected_event_ids": [
+          "EV-00569",
+          "EV-00580",
+          "EV-00599",
+          "EV-00631",
+          "EV-00669",
+          "EV-00720",
+          "EV-00786"
+        ],
+        "predicted_finding_id": "F-BASE-003",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00569",
+          "EV-00599",
+          "EV-00631",
+          "EV-00669",
+          "EV-00720",
+          "EV-00786"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 6
+      },
+      {
+        "technique_id": "T1059.001",
+        "technique_name": "PowerShell",
+        "tactic": "Execution",
+        "expected_event_ids": [
+          "EV-00721"
+        ],
+        "predicted_finding_id": "F-BASE-004",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00581",
+          "EV-00600",
+          "EV-00632",
+          "EV-00670",
+          "EV-00721",
+          "EV-00788"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 1
+      },
+      {
+        "technique_id": "T1059.003",
+        "technique_name": "Windows Command Shell",
+        "tactic": "Execution",
+        "expected_event_ids": [
+          "EV-00581",
+          "EV-00600",
+          "EV-00632",
+          "EV-00670",
+          "EV-00721",
+          "EV-00788"
+        ],
+        "predicted_finding_id": "F-BASE-004",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00581",
+          "EV-00600",
+          "EV-00632",
+          "EV-00670",
+          "EV-00721",
+          "EV-00788"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 6
+      },
+      {
+        "technique_id": "T1027",
+        "technique_name": "Obfuscated Files or Information",
+        "tactic": "Stealth",
+        "expected_event_ids": [],
+        "predicted_finding_id": null,
+        "predicted_status": null,
+        "cited_event_ids": [],
+        "matched": false,
+        "grounding_precision": 0.0,
+        "citation_overlap": 0
+      },
+      {
+        "technique_id": "T1003.001",
+        "technique_name": "LSASS Memory",
+        "tactic": "Credential Access",
+        "expected_event_ids": [
+          "EV-00788",
+          "EV-00789",
+          "EV-00790"
+        ],
+        "predicted_finding_id": "F-BASE-006",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00788",
+          "EV-00789",
+          "EV-00790"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 3
+      },
+      {
+        "technique_id": "T1078",
+        "technique_name": "Valid Accounts",
+        "tactic": "Privilege Escalation",
+        "expected_event_ids": [
+          "EV-00895",
+          "EV-00896"
+        ],
+        "predicted_finding_id": "F-BASE-007",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00895",
+          "EV-00896"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 2
+      },
+      {
+        "technique_id": "T1021.002",
+        "technique_name": "SMB/Windows Admin Shares",
+        "tactic": "Lateral Movement",
+        "expected_event_ids": [
+          "EV-00897"
+        ],
+        "predicted_finding_id": "F-BASE-008",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00897"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 1
+      },
+      {
+        "technique_id": "T1569.002",
+        "technique_name": "Service Execution",
+        "tactic": "Execution",
+        "expected_event_ids": [
+          "EV-00898",
+          "EV-00899"
+        ],
+        "predicted_finding_id": "F-BASE-009",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-00898",
+          "EV-00899"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 2
+      },
+      {
+        "technique_id": "T1560.001",
+        "technique_name": "Archive via Utility",
+        "tactic": "Collection",
+        "expected_event_ids": [
+          "EV-01010"
+        ],
+        "predicted_finding_id": "F-BASE-010",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-01010"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 1
+      },
+      {
+        "technique_id": "T1041",
+        "technique_name": "Exfiltration Over C2 Channel",
+        "tactic": "Exfiltration",
+        "expected_event_ids": [
+          "EV-01413"
+        ],
+        "predicted_finding_id": "F-BASE-011",
+        "predicted_status": "verified",
+        "cited_event_ids": [
+          "EV-01413"
+        ],
+        "matched": true,
+        "grounding_precision": 1.0,
+        "citation_overlap": 1
+      }
+    ],
+    "notes": "Scenario result (Fixed rule baseline): 11/12 techniques matched (F1=0.957, Precision=1.000, Recall=0.917, grounding=100.0%); missed T1027."
+  }
+]

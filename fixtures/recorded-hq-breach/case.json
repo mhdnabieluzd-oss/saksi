@@ -1,0 +1,43 @@
+{
+  "id": "CASE-2026-0001",
+  "title": "HQ breach at Markas Logistik (simulated)",
+  "created_at": "2026-11-08T01:12:04Z",
+  "status": "completed",
+  "severity": "critical",
+  "classification": "SULIT",
+  "scenario": true,
+  "recorded_run": true,
+  "recorded_at": "2026-11-08T01:16:33Z",
+  "recorded_model": "anthropic/claude-haiku-5.5",
+  "last_activity": {
+    "ts": "2026-11-08T01:16:33Z",
+    "summary": "EN & BM reports ready (13 verified findings); ledger sealed with ML-DSA-65"
+  },
+  "sources": [
+    {
+      "name": "web_access.jsonl",
+      "kind": "web",
+      "sha256": "69f1d3205caa77ed8abc4127bf97e14209ea1cf5ac0d82667b91c25f3b210f0f",
+      "size_bytes": 443050,
+      "event_count": 1250
+    },
+    {
+      "name": "sysmon.jsonl",
+      "kind": "sysmon",
+      "sha256": "a4c2a54a4f3e1cca67dc8bcb21b629387609c90e81b388cdd5d58b501be7cc46",
+      "size_bytes": 161721,
+      "event_count": 471
+    },
+    {
+      "name": "siem_events.json",
+      "kind": "siem",
+      "sha256": "04cdb675ab19ae190ab7d8e67a2256b14bbaf50033020ae218b8f76acfddfead",
+      "size_bytes": 128927,
+      "event_count": 417
+    }
+  ],
+  "event_count": 2138,
+  "finding_count": 13,
+  "verified_count": 13,
+  "shield_alert_count": 1
+}

@@ -1,0 +1,235 @@
+[
+  {
+    "id": "SIG-001",
+    "rule_id": "WEB-SCAN",
+    "title": "Web scanning from 203.0.113.66 (32 x 404 within 10 min)",
+    "technique_id": "T1595.002",
+    "tactic": "Reconnaissance",
+    "severity": "medium",
+    "event_ids": [
+      "EV-00415",
+      "EV-00416",
+      "EV-00417",
+      "EV-00418",
+      "EV-00419",
+      "EV-00420",
+      "EV-00421",
+      "EV-00425",
+      "EV-00426",
+      "EV-00427",
+      "EV-00429",
+      "EV-00430",
+      "EV-00431",
+      "EV-00432",
+      "EV-00434",
+      "EV-00437",
+      "EV-00438",
+      "EV-00439",
+      "EV-00440",
+      "EV-00441",
+      "EV-00442",
+      "EV-00444",
+      "EV-00446",
+      "EV-00447",
+      "EV-00448",
+      "EV-00450",
+      "EV-00452",
+      "EV-00454",
+      "EV-00456",
+      "EV-00457",
+      "EV-00459",
+      "EV-00460"
+    ],
+    "entities": [
+      "10.10.1.10",
+      "203.0.113.66",
+      "WEB-PORTAL-01"
+    ]
+  },
+  {
+    "id": "SIG-002",
+    "rule_id": "WEB-SQLI",
+    "title": "SQL injection attempts from 203.0.113.66 (3 requests)",
+    "technique_id": "T1190",
+    "tactic": "Initial Access",
+    "severity": "high",
+    "event_ids": [
+      "EV-00505",
+      "EV-00506",
+      "EV-00510"
+    ],
+    "entities": [
+      "10.10.1.10",
+      "203.0.113.66",
+      "WEB-PORTAL-01"
+    ]
+  },
+  {
+    "id": "SIG-003",
+    "rule_id": "WEB-SHELL",
+    "title": "Web shell img_upd.aspx uploaded and used with cmd=",
+    "technique_id": "T1505.003",
+    "tactic": "Persistence",
+    "severity": "critical",
+    "event_ids": [
+      "EV-00569",
+      "EV-00580",
+      "EV-00599",
+      "EV-00631",
+      "EV-00669",
+      "EV-00720",
+      "EV-00786"
+    ],
+    "entities": [
+      "10.10.1.10",
+      "203.0.113.66",
+      "WEB-PORTAL-01"
+    ]
+  },
+  {
+    "id": "SIG-004",
+    "rule_id": "WEBSERVER-SHELL-SPAWN",
+    "title": "Web server process spawned shell activity on WEB-PORTAL-01",
+    "technique_id": "T1059.003",
+    "tactic": "Execution",
+    "severity": "high",
+    "event_ids": [
+      "EV-00581",
+      "EV-00600",
+      "EV-00632",
+      "EV-00670",
+      "EV-00721",
+      "EV-00788"
+    ],
+    "entities": [
+      "WEB-PORTAL-01",
+      "LOGISTIK\\svc_web",
+      "cmd.exe",
+      "powershell.exe",
+      "w3wp.exe"
+    ]
+  },
+  {
+    "id": "SIG-005",
+    "rule_id": "PS-ENCODED",
+    "title": "Encoded PowerShell on WEB-PORTAL-01",
+    "technique_id": "T1059.001",
+    "tactic": "Execution",
+    "severity": "high",
+    "event_ids": [
+      "EV-00721"
+    ],
+    "entities": [
+      "WEB-PORTAL-01",
+      "LOGISTIK\\svc_web",
+      "powershell.exe",
+      "w3wp.exe"
+    ]
+  },
+  {
+    "id": "SIG-006",
+    "rule_id": "LSASS-DUMP",
+    "title": "LSASS memory access on WEB-PORTAL-01",
+    "technique_id": "T1003.001",
+    "tactic": "Credential Access",
+    "severity": "critical",
+    "event_ids": [
+      "EV-00788",
+      "EV-00789",
+      "EV-00790"
+    ],
+    "entities": [
+      "WEB-PORTAL-01",
+      "LOGISTIK\\svc_web",
+      "cmd.exe",
+      "rundll32.exe",
+      "w3wp.exe"
+    ]
+  },
+  {
+    "id": "SIG-007",
+    "rule_id": "EXPLICIT-CRED",
+    "title": "Explicit credential use (2 logon events)",
+    "technique_id": "T1078",
+    "tactic": "Privilege Escalation",
+    "severity": "high",
+    "event_ids": [
+      "EV-00895",
+      "EV-00896"
+    ],
+    "entities": [
+      "10.10.1.10",
+      "10.10.3.20",
+      "FS-LOGISTIK-01",
+      "WEB-PORTAL-01",
+      "LOGISTIK\\k.hafiz"
+    ]
+  },
+  {
+    "id": "SIG-008",
+    "rule_id": "ADMIN-SHARE",
+    "title": "Administrative share access from 10.10.1.10",
+    "technique_id": "T1021.002",
+    "tactic": "Lateral Movement",
+    "severity": "high",
+    "event_ids": [
+      "EV-00897"
+    ],
+    "entities": [
+      "10.10.1.10",
+      "FS-LOGISTIK-01",
+      "LOGISTIK\\k.hafiz"
+    ]
+  },
+  {
+    "id": "SIG-009",
+    "rule_id": "PSEXEC",
+    "title": "PsExec service activity on FS-LOGISTIK-01",
+    "technique_id": "T1569.002",
+    "tactic": "Execution",
+    "severity": "high",
+    "event_ids": [
+      "EV-00898",
+      "EV-00899"
+    ],
+    "entities": [
+      "FS-LOGISTIK-01",
+      "NT AUTHORITY\\SYSTEM",
+      "psexesvc.exe",
+      "services.exe"
+    ]
+  },
+  {
+    "id": "SIG-010",
+    "rule_id": "ARCHIVE-STAGING",
+    "title": "Archive staging on FS-LOGISTIK-01",
+    "technique_id": "T1560.001",
+    "tactic": "Collection",
+    "severity": "critical",
+    "event_ids": [
+      "EV-01010"
+    ],
+    "entities": [
+      "FS-LOGISTIK-01",
+      "LOGISTIK\\k.hafiz",
+      "7z.exe",
+      "cmd.exe"
+    ]
+  },
+  {
+    "id": "SIG-011",
+    "rule_id": "EXFIL-VOLUME",
+    "title": "Large outbound transfer to 198.51.100.77 (~432 MB)",
+    "technique_id": "T1041",
+    "tactic": "Exfiltration",
+    "severity": "critical",
+    "event_ids": [
+      "EV-01413"
+    ],
+    "entities": [
+      "10.10.3.20",
+      "198.51.100.77",
+      "PA-FW-01"
+    ]
+  }
+]

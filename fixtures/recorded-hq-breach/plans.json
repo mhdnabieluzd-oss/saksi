@@ -1,0 +1,412 @@
+[
+  {
+    "plan_id": "PLAN-CASE-2026-0001-v1",
+    "case_id": "CASE-2026-0001",
+    "run_id": "RUN-CASE-2026-0001",
+    "version": 1,
+    "created_at": "2026-11-08T01:12:04Z",
+    "updated_at": "2026-11-08T01:12:04Z",
+    "status": "active",
+    "objective": "The signals describe a multi-stage intrusion that began with web scanning and SQL injection from 203.",
+    "revision_reason": "Initial plan generated from Triage scope and 11 detection signals",
+    "tasks": [
+      {
+        "task_id": "TASK-01",
+        "title": "Inventory triage detection signals",
+        "objective": "Review all 11 deterministic detection signals from Triage.",
+        "rationale": "Triage identified critical signals across WEB-PORTAL-01 and FS-LOGISTIK-01.",
+        "status": "completed",
+        "tool_name": "list_signals",
+        "input": {},
+        "depends_on": [],
+        "expected_evidence": [
+          "11 detection signals",
+          "Quarantine status for EV-00580"
+        ],
+        "risk": "read_only",
+        "max_results": 25,
+        "timeout_seconds": 20,
+        "started_at": "2026-11-08T01:12:04Z",
+        "finished_at": "2026-11-08T01:12:04Z",
+        "output_summary": "11 signal(s) loaded across Reconnaissance to Exfiltration",
+        "evidence_ids": [
+          "EV-00415",
+          "EV-00416",
+          "EV-00505",
+          "EV-00506",
+          "EV-00569",
+          "EV-00580"
+        ],
+        "finding_ids": [],
+        "blocked_reason": null,
+        "plan_version_added": 1
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Inspect initial access & web shell events",
+        "objective": "Verify SQLi on /login.aspx and web shell upload on WEB-PORTAL-01.",
+        "rationale": "Signals SIG-001..SIG-004 indicate web scanning, SQL injection and img_upd.aspx web shell execution.",
+        "status": "completed",
+        "tool_name": "search_events",
+        "input": {
+          "query": "img_upd",
+          "limit": 25
+        },
+        "depends_on": [
+          "TASK-01"
+        ],
+        "expected_evidence": [
+          "POST /shipments/upload.aspx",
+          "w3wp.exe spawning cmd.exe"
+        ],
+        "risk": "read_only",
+        "max_results": 25,
+        "timeout_seconds": 20,
+        "started_at": "2026-11-08T01:12:04Z",
+        "finished_at": "2026-11-08T01:12:04Z",
+        "output_summary": "7 events matched: img_upd.aspx uploaded and invoked with cmd= parameters",
+        "evidence_ids": [
+          "EV-00505",
+          "EV-00506",
+          "EV-00510",
+          "EV-00569",
+          "EV-00578",
+          "EV-00581"
+        ],
+        "finding_ids": [
+          "F-001",
+          "F-002",
+          "F-003",
+          "F-004"
+        ],
+        "blocked_reason": null,
+        "plan_version_added": 1
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Investigate LSASS credential dump on WEB-PORTAL-01",
+        "objective": "Confirm whether comsvcs.dll MiniDump accessed lsass.exe memory.",
+        "rationale": "Signal SIG-006 flagged rundll32.exe accessing lsass.exe (T1003.001).",
+        "status": "completed",
+        "tool_name": "search_events",
+        "input": {
+          "query": "lsass",
+          "limit": 25
+        },
+        "depends_on": [
+          "TASK-02"
+        ],
+        "expected_evidence": [
+          "Sysmon EventID 10 on lsass.exe",
+          "Creation of C:\\Users\\Public\\lsass.dmp"
+        ],
+        "risk": "read_only",
+        "max_results": 25,
+        "timeout_seconds": 20,
+        "started_at": "2026-11-08T01:12:04Z",
+        "finished_at": "2026-11-08T01:12:04Z",
+        "output_summary": "7 events matched: rundll32 comsvcs.dll MiniDump wrote lsass.dmp",
+        "evidence_ids": [
+          "EV-00786",
+          "EV-00788",
+          "EV-00789",
+          "EV-00790",
+          "EV-00791"
+        ],
+        "finding_ids": [
+          "F-008"
+        ],
+        "blocked_reason": null,
+        "plan_version_added": 1
+      }
+    ],
+    "limits": {
+      "max_steps": 20,
+      "max_tool_calls": 40,
+      "max_runtime_seconds": 300
+    },
+    "stop_conditions": [
+      "objective_met",
+      "budget_exhausted",
+      "no_safe_next_step"
+    ],
+    "stop_reason": null
+  },
+  {
+    "plan_id": "PLAN-CASE-2026-0001-v2",
+    "case_id": "CASE-2026-0001",
+    "run_id": "RUN-CASE-2026-0001",
+    "version": 2,
+    "created_at": "2026-11-08T01:12:04Z",
+    "updated_at": "2026-11-08T01:12:04Z",
+    "status": "completed",
+    "objective": "The signals describe a multi-stage intrusion that began with web scanning and SQL injection from 203.",
+    "revision_reason": "Re-planned after inspecting WEB-PORTAL-01 evidence: added lateral movement pivot on LOGISTIK\\k.hafiz and exfiltration trace to 198.51.100.77 (15 tool executions)",
+    "tasks": [
+      {
+        "task_id": "TASK-01",
+        "title": "Inventory triage detection signals",
+        "objective": "Review all 11 deterministic detection signals from Triage.",
+        "rationale": "Triage identified critical signals across WEB-PORTAL-01 and FS-LOGISTIK-01.",
+        "status": "completed",
+        "tool_name": "list_signals",
+        "input": {},
+        "depends_on": [],
+        "expected_evidence": [
+          "11 detection signals",
+          "Quarantine status for EV-00580"
+        ],
+        "risk": "read_only",
+        "max_results": 25,
+        "timeout_seconds": 20,
+        "started_at": "2026-11-08T01:12:04Z",
+        "finished_at": "2026-11-08T01:12:04Z",
+        "output_summary": "11 signal(s) loaded across Reconnaissance to Exfiltration",
+        "evidence_ids": [
+          "EV-00415",
+          "EV-00416",
+          "EV-00505",
+          "EV-00506",
+          "EV-00569",
+          "EV-00580"
+        ],
+        "finding_ids": [],
+        "blocked_reason": null,
+        "plan_version_added": 1
+      },
+      {
+        "task_id": "TASK-02",
+        "title": "Inspect initial access & web shell events",
+        "objective": "Verify SQLi on /login.aspx and web shell upload on WEB-PORTAL-01.",
+        "rationale": "Signals SIG-001..SIG-004 indicate web scanning, SQL injection and img_upd.aspx web shell execution.",
+        "status": "completed",
+        "tool_name": "search_events",
+        "input": {
+          "query": "img_upd",
+          "limit": 25
+        },
+        "depends_on": [
+          "TASK-01"
+        ],
+        "expected_evidence": [
+          "POST /shipments/upload.aspx",
+          "w3wp.exe spawning cmd.exe"
+        ],
+        "risk": "read_only",
+        "max_results": 25,
+        "timeout_seconds": 20,
+        "started_at": "2026-11-08T01:12:04Z",
+        "finished_at": "2026-11-08T01:12:04Z",
+        "output_summary": "7 events matched: img_upd.aspx uploaded and invoked with cmd= parameters",
+        "evidence_ids": [
+          "EV-00505",
+          "EV-00506",
+          "EV-00510",
+          "EV-00569",
+          "EV-00578",
+          "EV-00581"
+        ],
+        "finding_ids": [
+          "F-001",
+          "F-002",
+          "F-003",
+          "F-004"
+        ],
+        "blocked_reason": null,
+        "plan_version_added": 1
+      },
+      {
+        "task_id": "TASK-03",
+        "title": "Investigate LSASS credential dump on WEB-PORTAL-01",
+        "objective": "Confirm whether comsvcs.dll MiniDump accessed lsass.exe memory.",
+        "rationale": "Signal SIG-006 flagged rundll32.exe accessing lsass.exe (T1003.001).",
+        "status": "completed",
+        "tool_name": "search_events",
+        "input": {
+          "query": "lsass",
+          "limit": 25
+        },
+        "depends_on": [
+          "TASK-02"
+        ],
+        "expected_evidence": [
+          "Sysmon EventID 10 on lsass.exe",
+          "Creation of C:\\Users\\Public\\lsass.dmp"
+        ],
+        "risk": "read_only",
+        "max_results": 25,
+        "timeout_seconds": 20,
+        "started_at": "2026-11-08T01:12:04Z",
+        "finished_at": "2026-11-08T01:12:04Z",
+        "output_summary": "7 events matched: rundll32 comsvcs.dll MiniDump wrote lsass.dmp",
+        "evidence_ids": [
+          "EV-00786",
+          "EV-00788",
+          "EV-00789",
+          "EV-00790",
+          "EV-00791"
+        ],
+        "finding_ids": [
+          "F-008"
+        ],
+        "blocked_reason": null,
+        "plan_version_added": 1
+      },
+      {
+        "task_id": "TASK-04",
+        "title": "Pivot on compromised account LOGISTIK\\k.hafiz",
+        "objective": "Trace explicit-credential logon and SMB lateral movement to FS-LOGISTIK-01.",
+        "rationale": "Web shell ran 'net user k.hafiz /domain' prior to LSASS dump; check where k.hafiz authenticated next.",
+        "status": "completed",
+        "tool_name": "related_auth_events",
+        "input": {
+          "user": "k.hafiz",
+          "limit": 25
+        },
+        "depends_on": [
+          "TASK-03"
+        ],
+        "expected_evidence": [
+          "Event 4648 explicit logon",
+          "Event 5140 ADMIN$ share",
+          "PSEXESVC installation"
+        ],
+        "risk": "read_only",
+        "max_results": 25,
+        "timeout_seconds": 20,
+        "started_at": "2026-11-08T01:12:04Z",
+        "finished_at": "2026-11-08T01:12:04Z",
+        "output_summary": "Confirmed lateral movement from WEB-PORTAL-01 to FS-LOGISTIK-01 via ADMIN$ and PSEXESVC",
+        "evidence_ids": [
+          "EV-00631",
+          "EV-00895",
+          "EV-00896",
+          "EV-00897",
+          "EV-00898",
+          "EV-00899",
+          "EV-00902"
+        ],
+        "finding_ids": [
+          "F-005",
+          "F-009",
+          "F-010",
+          "F-011"
+        ],
+        "blocked_reason": null,
+        "plan_version_added": 2
+      },
+      {
+        "task_id": "TASK-05",
+        "title": "Correlate C2 & archive staging on FS-LOGISTIK-01",
+        "objective": "Trace 7z.exe collection of Jadual_Penghantaran_Q4 and outbound transfer to 198.51.100.77.",
+        "rationale": "Encoded PowerShell connected to 198.51.100.77:443; check if the same external host received staged files.",
+        "status": "completed",
+        "tool_name": "search_events",
+        "input": {
+          "query": "198.51.100.77",
+          "limit": 25
+        },
+        "depends_on": [
+          "TASK-02",
+          "TASK-04"
+        ],
+        "expected_evidence": [
+          "7z.exe creating q4.7z",
+          "curl.exe upload to 198.51.100.77",
+          "412 MB firewall flow"
+        ],
+        "risk": "read_only",
+        "max_results": 25,
+        "timeout_seconds": 20,
+        "started_at": "2026-11-08T01:12:04Z",
+        "finished_at": "2026-11-08T01:12:04Z",
+        "output_summary": "4 events matched: q4.7z archived from Jadual_Penghantaran_Q4 and exfiltrated (412 MB) to 198.51.100.77",
+        "evidence_ids": [
+          "EV-00720",
+          "EV-00721",
+          "EV-00724",
+          "EV-01010",
+          "EV-01015",
+          "EV-01245",
+          "EV-01246",
+          "EV-01413"
+        ],
+        "finding_ids": [
+          "F-006",
+          "F-007",
+          "F-012",
+          "F-013"
+        ],
+        "blocked_reason": null,
+        "plan_version_added": 2
+      },
+      {
+        "task_id": "TASK-06",
+        "title": "Submit candidate findings to Verifier",
+        "objective": "Submit all reconstructed attack steps for deterministic and AI grounding verification.",
+        "rationale": "All signal leads and entity pivots completed; ready for independent verification.",
+        "status": "completed",
+        "tool_name": "submit_findings",
+        "input": {},
+        "depends_on": [
+          "TASK-02",
+          "TASK-03",
+          "TASK-04",
+          "TASK-05"
+        ],
+        "expected_evidence": [
+          "Verified findings",
+          "Evidence relationship graph"
+        ],
+        "risk": "read_only",
+        "max_results": 25,
+        "timeout_seconds": 20,
+        "started_at": "2026-11-08T01:12:04Z",
+        "finished_at": "2026-11-08T01:12:04Z",
+        "output_summary": "Submitted 13 finding(s); 13 verified by Verifier",
+        "evidence_ids": [
+          "EV-00414",
+          "EV-00415",
+          "EV-00505",
+          "EV-00506",
+          "EV-00569",
+          "EV-00578",
+          "EV-00581",
+          "EV-00600",
+          "EV-00631",
+          "EV-00632",
+          "EV-00720",
+          "EV-00721"
+        ],
+        "finding_ids": [
+          "F-001",
+          "F-002",
+          "F-003",
+          "F-004",
+          "F-005",
+          "F-006",
+          "F-007",
+          "F-008",
+          "F-009",
+          "F-010",
+          "F-011",
+          "F-012",
+          "F-013"
+        ],
+        "blocked_reason": null,
+        "plan_version_added": 2
+      }
+    ],
+    "limits": {
+      "max_steps": 20,
+      "max_tool_calls": 40,
+      "max_runtime_seconds": 300
+    },
+    "stop_conditions": [
+      "objective_met",
+      "budget_exhausted",
+      "no_safe_next_step"
+    ],
+    "stop_reason": "objective_met"
+  }
+]

