@@ -9,7 +9,7 @@ $PlatformDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $PlatformDir
 
 Write-Host "======================================================" -ForegroundColor Cyan
-Write-Host "  SAKSI — Agentic AI Cyber Incident Investigation     " -ForegroundColor Cyan
+Write-Host "  SAKSI - Agentic AI Cyber Incident Investigation     " -ForegroundColor Cyan
 Write-Host "======================================================" -ForegroundColor Cyan
 
 # Locate Python virtual environment
@@ -20,7 +20,7 @@ if (Test-Path "$PlatformDir\.venv\Scripts\python.exe") {
     $PythonExe = (Resolve-Path "$PlatformDir\..\.venv\Scripts\python.exe").Path
 }
 
-Write-Host "[1/3] Seeding recorded demo case (CASE-2026-0001) & refreshing proposals..." -ForegroundColor Green
+Write-Host "[1/3] Seeding demo case (CASE-2026-0001)..." -ForegroundColor Green
 & $PythonExe "$PlatformDir\scripts\seed_demo.py"
 
 if ($SeedOnly) {
@@ -44,4 +44,3 @@ try {
         Stop-Process -Id $BackendJob.Id -Force -ErrorAction SilentlyContinue
     }
 }
-
