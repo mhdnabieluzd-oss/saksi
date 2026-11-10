@@ -88,3 +88,4 @@ if __name__ == "__main__":
     dest = seed_recorded_case()
     v = custody.verify("CASE-2026-0001")
     print(f"Seeded CASE-2026-0001 at {dest} (ledger ok={v.ok}, signature valid={v.signature.valid})")
+
