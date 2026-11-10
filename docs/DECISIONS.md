@@ -38,3 +38,4 @@
 - **Date:** 2026-11-10
 - **Context:** We studied Palo Alto Cortex XSIAM's dark command-centre density and trust patterns (`palo-alto/DESIGN-SPEC.md`, `Xsiam-teardown.md`).
 - **Decision:** Adopt the dark navy luminance hierarchy (`#070a12` → `#0d1423` → `#161e2a`), solid square letter severity badges (`C`, `H`, `M`, `L`) in dense views alongside glyph+word badges in tables, severity-colored MITRE cells, dashed-vs-solid provenance edges, split-pane findings view, Verifier explainability popover, segmented step progress ring, and `/pivot`, `/trace`, `/finding` slash commands in Tanya SAKSI — all with original SAKSI branding, self-hosted/system Inter + JetBrains Mono typography, and zero third-party copyrighted assets.
+

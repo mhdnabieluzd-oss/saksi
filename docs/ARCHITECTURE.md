@@ -107,3 +107,4 @@ flowchart TB
    - `finding`: newly verified/updated `Finding`
    - `run_state`: `{status, paused, stopped, error}`
    - `done`: `{status}`
+
