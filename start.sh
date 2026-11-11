@@ -8,8 +8,12 @@ FRONTEND_PORT="${FRONTEND_PORT:-5173}"
 PYTHON_BIN="python3"
 if [ -x "$PLATFORM_DIR/.venv/bin/python" ]; then
   PYTHON_BIN="$PLATFORM_DIR/.venv/bin/python"
+elif [ -x "$PLATFORM_DIR/.venv/Scripts/python.exe" ]; then
+  PYTHON_BIN="$PLATFORM_DIR/.venv/Scripts/python.exe"
 elif [ -x "$PLATFORM_DIR/../.venv/bin/python" ]; then
   PYTHON_BIN="$PLATFORM_DIR/../.venv/bin/python"
+elif [ -x "$PLATFORM_DIR/../.venv/Scripts/python.exe" ]; then
+  PYTHON_BIN="$PLATFORM_DIR/../.venv/Scripts/python.exe"
 fi
 
 echo "[1/3] Seeding recorded demo case (CASE-2026-0001) & refreshing proposals..."
