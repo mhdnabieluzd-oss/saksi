@@ -10,6 +10,7 @@ import csv
 import hashlib
 import json
 import re
+import xml.etree.ElementTree as ET
 from collections.abc import Callable, Iterator
 from datetime import datetime, timezone
 from pathlib import Path
@@ -32,18 +33,19 @@ _SIEM_TYPES = {
     "4624": "logon", "4625": "logon_failure", "4648": "explicit_logon", "5140": "share_access",
     "7045": "service_install", "flow": "network_flow", "dns": "dns_query", "ids": "ids_alert",
 }
-_TS_KEYS = ("timestamp", "time", "@timestamp", "date", "utctime")
+_TS_KEYS = ("timestamp", "time", "@timestamp", "date", "utctime", "ts", "datetime")
 _TYPE_KEYS = ("event_type", "action", "eventid", "event_code", "category", "detection_types")
-_HOST_KEYS = ("host", "hostname", "computer", "computer_name")
-_USER_KEYS = ("user", "username", "user_name")
+_HOST_KEYS = ("host", "hostname", "computer", "computer_name", "host_id")
+_USER_KEYS = ("user", "username", "user_name", "user_id")
 _SRC_KEYS = ("src_ip", "source_ip", "client_ip", "sourceip", "source.ip")
 _DST_KEYS = ("dst_ip", "destination_ip", "dest_ip", "destinationip", "destination.ip")
 _MSG_KEYS = ("message", "description", "raw_log", "details", "rule_names")
 _PROCESS_KEYS = ("processname", "process", "image", "process_name")
+_PARENT_PROCESS_KEYS = ("parent_process", "parentprocess", "parentimage", "parent_image")
 _COMMAND_KEYS = ("commandline", "command_line")
 _STATUS_KEYS = ("status_code", "status", "response.code")
 _BYTES_KEYS = ("bytes_out", "bytes_sent")
-_SEVERITY_KEYS = ("severity", "level")
+_SEVERITY_KEYS = ("severity", "level", "severity_level")
 
 Builder = Callable[[dict[str, Any], str, str], Event | None]
 
@@ -52,6 +54,9 @@ def detect_kind(path: Path) -> SourceKind:
     """Classify a file as web, sysmon, siem or generic from the field names of its first record."""
     if path.suffix.lower() == ".csv":
         return "generic"
+    text_format = _text_format(path)
+    if text_format is not None:
+        return "sysmon" if text_format == "xml" else "web"
     first = _first_record(path)
     if first is None:
         return "generic"
@@ -67,7 +72,8 @@ def detect_kind(path: Path) -> SourceKind:
 
 def normalize_file(path: Path) -> tuple[list[Event], int]:
     """Normalise every record in `path`. Returns (events with empty ids, count of rows skipped as unparseable)."""
-    builder = _BUILDERS[detect_kind(path)]
+    text_format = _text_format(path) if path.suffix.lower() != ".csv" else None
+    builder = _TEXT_BUILDERS[text_format] if text_format else _BUILDERS[detect_kind(path)]
     events: list[Event] = []
     skipped = 0
     for row in _rows(path):
@@ -113,11 +119,122 @@ def _rows(path: Path) -> Iterator[tuple[str, dict[str, Any]] | None]:
     """Yield (raw, record) for each data row, or None for a row that cannot be parsed."""
     if path.suffix.lower() == ".csv":
         yield from _csv_rows(path)
+    elif (text_format := _text_format(path)) is not None:
+        yield from _TEXT_ROWS[text_format](path)
     elif _is_json_array(path):
         yield from _json_array_rows(path)
     else:
         yield from _jsonl_rows(path)
 
+
+_ACCESS_LINE = re.compile(
+    r'^(?P<ip>\S+) \S+ (?P<user>\S+) \[(?P<ts>[^\]]+)\] "(?P<method>[A-Z]+) (?P<target>\S+)(?: HTTP/[\d.]+)?" '
+    r'(?P<status>\d{3}) (?P<bytes>\S+)')
+_ERROR_LINE = re.compile(r"^(?P<ts>\d{4}/\d\d/\d\d \d\d:\d\d:\d\d) \[(?P<level>\w+)\] (?P<msg>.*)$")
+_LEVEL_SEVERITY: dict[str, Severity] = {"debug": "info", "info": "info", "notice": "info", "warn": "low",
+                                         "error": "low", "crit": "high", "alert": "high", "emerg": "critical"}
+MAX_XML_LINE = 1_000_000
+
+
+def _text_format(path: Path) -> str | None:
+    """Spot the plain-text formats: one Sysmon XML <Event> per line ("xml"), nginx/Apache access log
+    ("access") or nginx error log ("error"). Returns None for JSON, JSONL and CSV-like files."""
+    first = _first_line(path)
+    if first is None:
+        return None
+    if first.startswith("<Event"):
+        return "xml"
+    if _ACCESS_LINE.match(first):
+        return "access"
+    if _ERROR_LINE.match(first):
+        return "error"
+    return None
+
+
+def _lines(path: Path) -> Iterator[str]:
+    with path.open(encoding="utf-8-sig", errors="replace") as handle:
+        for line in handle:
+            raw = line.rstrip("\r\n")
+            if raw.strip():
+                yield raw
+
+
+def _xml_rows(path: Path) -> Iterator[tuple[str, dict[str, Any]] | None]:
+    """Sysmon events exported as XML, one <Event> element per line. Flattened to the same field names
+    the JSON Sysmon export uses, so the Sysmon builder and detection rules apply unchanged."""
+    for raw in _lines(path):
+        # Sysmon events never carry a DTD. Refusing DOCTYPE/ENTITY blocks entity-expansion (billion laughs) input.
+        if len(raw) > MAX_XML_LINE or "<!DOCTYPE" in raw.upper() or "<!ENTITY" in raw.upper():
+            yield None
+            continue
+        try:
+            root = ET.fromstring(raw)
+        except ET.ParseError:
+            yield None
+            continue
+        ns = {"e": root.tag.partition("}")[0].strip("{")}
+        q = (lambda name: f"e:{name}") if ns["e"] else (lambda name: name)
+        system = root.find(q("System"), ns) if ns["e"] else root.find("System")
+        record: dict[str, Any] = {}
+        if system is not None:
+            event_id = system.find(q("EventID"), ns)
+            computer = system.find(q("Computer"), ns)
+            created = system.find(q("TimeCreated"), ns)
+            record["EventID"] = event_id.text if event_id is not None else None
+            record["Computer"] = computer.text if computer is not None else None
+            record["UtcTime"] = created.get("SystemTime") if created is not None else None
+        data = root.find(q("EventData"), ns) if ns["e"] else root.find("EventData")
+        if data is not None:
+            for item in data:
+                name = item.get("Name")
+                if name:
+                    record[name] = item.text
+        # EventData's own UtcTime ("2020-11-03 15:50:18.664") wins when present, as in the JSON export.
+        yield raw, record
+
+
+def _access_rows(path: Path) -> Iterator[tuple[str, dict[str, Any]] | None]:
+    """nginx/Apache combined access log lines -> the web record shape (client_ip, method, path, status...)."""
+    for raw in _lines(path):
+        match = _ACCESS_LINE.match(raw)
+        if match is None:
+            yield None
+            continue
+        try:
+            moment = datetime.strptime(match["ts"], "%d/%b/%Y:%H:%M:%S %z")
+        except ValueError:
+            yield None
+            continue
+        target = match["target"]
+        route, _, query = target.partition("?")
+        yield raw, {
+            "timestamp": moment.astimezone(timezone.utc).isoformat(), "client_ip": match["ip"],
+            "method": match["method"], "path": route, "query": query or None,
+            "status": match["status"], "bytes_sent": None if match["bytes"] == "-" else match["bytes"],
+        }
+
+
+def _error_rows(path: Path) -> Iterator[tuple[str, dict[str, Any]] | None]:
+    """nginx error log lines. Timestamps carry no zone and are read as UTC like other naive times."""
+    for raw in _lines(path):
+        match = _ERROR_LINE.match(raw)
+        yield (raw, {"ts": match["ts"], "level": match["level"], "msg": match["msg"]}) if match else None
+
+
+def _web_error(record: dict[str, Any], raw: str, source_file: str) -> Event | None:
+    ts = _parse_ts(record.get("ts"))
+    if ts is None:
+        return None
+    message = str(record.get("msg") or "")
+    client = re.search(r"client: ([0-9a-fA-F.:]+)", message)
+    request = re.search(r'request: "([A-Z]+) (\S+)', message)
+    return _event(
+        ts=ts, source="web", source_file=source_file, event_type="http_error", raw=raw,
+        message=message[:300],
+        severity=_LEVEL_SEVERITY.get(str(record.get("level")).lower(), "low"),
+        src_ip=client.group(1) if client else None,
+        url=request.group(2) if request else None,
+    )
 
 def _csv_rows(path: Path) -> Iterator[tuple[str, dict[str, Any]] | None]:
     lines = [line.rstrip("\r\n") for line in _read(path).split("\n")]
@@ -349,8 +466,23 @@ def _generic(record: dict[str, Any], raw: str, source_file: str) -> Event | None
     event_type = _slug(_pick(low, _TYPE_KEYS)) or "log_line"
     src = _clean(_pick(low, _SRC_KEYS))
     dst = _clean(_pick(low, _DST_KEYS))
+    tag = _clean(low.get("tag_technique")) or _clean(low.get("mitre_technique_id"))
+    tactic = _clean(low.get("tag_tactic")) or _clean(low.get("mitre_tactic"))
+    if tag and (not re.fullmatch(r"T\d{4}(\.\d{3})?", tag) or tag == "T0000"):
+        tag = tactic = None
+
+    src_kind = _clean(low.get("source"))
+    source: SourceKind = src_kind if src_kind in ("web", "sysmon", "siem", "generic") else "generic"
+
+    raw_val = record.get("raw")
+    raw_payload = raw_val if isinstance(raw_val, str) and raw_val.strip() else raw
+
+    flags_val = record.get("flags")
+    flags = [str(f) for f in flags_val] if isinstance(flags_val, list) else []
+
     return _event(
-        ts=ts, source="generic", source_file=source_file, event_type=event_type, raw=raw,
+        tag_technique=tag, tag_tactic=tactic if tag else None,
+        ts=ts, source=source, source_file=source_file, event_type=event_type, raw=raw_payload,
         message=_clean(_pick(low, _MSG_KEYS)) or f"{event_type}: {src or '?'} -> {dst or '?'}",
         severity=_severity(_pick(low, _SEVERITY_KEYS)),
         host=_host(_pick(low, _HOST_KEYS)),
@@ -358,15 +490,22 @@ def _generic(record: dict[str, Any], raw: str, source_file: str) -> Event | None
         src_ip=src,
         dst_ip=dst,
         process=_base(_pick(low, _PROCESS_KEYS)),
+        parent_process=_base(_pick(low, _PARENT_PROCESS_KEYS)),
         command_line=_clean(_pick(low, _COMMAND_KEYS)),
+        url=_clean(low.get("url")),
         status_code=_int(_pick(low, _STATUS_KEYS)),
         bytes_out=_int(_pick(low, _BYTES_KEYS)),
+        flags=flags,
     )
 
 
+_TEXT_ROWS = {"xml": _xml_rows, "access": _access_rows, "error": _error_rows}
 _BUILDERS: dict[SourceKind, Builder] = {
     "web": _web,
     "sysmon": _sysmon,
     "siem": _siem,
     "generic": _generic,
 }
+
+
+_TEXT_BUILDERS: dict[str, Builder] = {"xml": _sysmon, "access": _web, "error": _web_error}
