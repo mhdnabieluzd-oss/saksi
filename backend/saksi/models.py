@@ -51,6 +51,8 @@ class Event(BaseModel):
     url: Optional[str] = None
     status_code: Optional[int] = None
     bytes_out: Optional[int] = None
+    tag_technique: Optional[str] = None       # ATT&CK id the source SIEM already tagged this record with
+    tag_tactic: Optional[str] = None
     message: str                              # one-line human summary
     raw: str                                  # original record text (JSON or line), byte-for-byte as ingested
     sha256: str                               # sha256 of `raw` (utf-8)

@@ -111,6 +111,7 @@ def generate_proposals_from_findings(case_id: str) -> list[ResponseProposal]:
         connector: str,
         parameters: dict[str, Any],
         risk_tier: str = "high",
+        recommended_by: str = "scenario_template",
     ) -> None:
         key = (action_type, target.lower())
         if key in seen_targets:
@@ -157,7 +158,7 @@ def generate_proposals_from_findings(case_id: str) -> list[ResponseProposal]:
             created_at=created_at,
             expires_at=expires_at,
             payload_hash=phash,
-            recommended_by="scenario_template",
+            recommended_by=recommended_by,
             basis_hash=_basis_hash(
                 [(fid, finding_status[fid]) for fid in fids],
                 [(eid, events_by_id[eid].sha256) for eid in eids if eid in events_by_id],
@@ -266,7 +267,95 @@ def generate_proposals_from_findings(case_id: str) -> list[ResponseProposal]:
             risk_tier="critical",
         )
 
+    if not proposals:
+        _add_evidence_driven_proposals(findings, events_by_id, add_proposal)
+
     return proposals
+
+
+_BUILTIN_ACCOUNT = re.compile(
+    r"^(nt authority\\|nt service\\|window manager\\|font driver host\\|(local service|network service|system)$)|\$$",
+    re.IGNORECASE)
+
+
+def _is_builtin_account(user: str) -> bool:
+    """Built-in and machine accounts (SYSTEM, NETWORK SERVICE, HOST$) are never proposed for disabling."""
+    return bool(_BUILTIN_ACCOUNT.search(user.strip()))
+
+
+def _add_evidence_driven_proposals(findings: list[Finding], events_by_id: dict[str, Any], add_proposal) -> None:
+    """For uploaded data (no scenario template matched): propose containment for the host, account and
+    external address that appear most often in the verified findings' cited events. The analyst still
+    has to approve each one."""
+    import ipaddress
+    from collections import Counter
+
+    hosts: Counter[str] = Counter()
+    users: Counter[str] = Counter()
+    ips: Counter[str] = Counter()
+    for f in findings:
+        for eid in f.evidence_ids:
+            ev = events_by_id.get(eid)
+            if ev is None:
+                continue
+            if ev.host:
+                hosts[ev.host] += 1
+            if ev.user and not _is_builtin_account(ev.user):
+                users[ev.user] += 1
+            for ip in (ev.src_ip, ev.dst_ip):
+                try:
+                    if ip and not ipaddress.ip_address(ip).is_private:
+                        ips[ip] += 1
+                except ValueError:
+                    continue
+
+    def cited_by(value: str) -> list[Finding]:
+        return [f for f in findings if any(
+            value in (events_by_id[e].host, events_by_id[e].user, events_by_id[e].src_ip, events_by_id[e].dst_ip)
+            for e in f.evidence_ids if e in events_by_id)]
+
+    def top(counter: Counter[str], n: int) -> list[tuple[str, list[Finding]]]:
+        return [(value, cited_by(value)) for value, _count in counter.most_common(n)]
+
+    for host, fs in top(hosts, 3):
+        add_proposal(
+            action_type="isolate_host", target=host,
+            title=f"Network-isolate host {host}",
+            reason=f"{host} appears in the evidence of {len(fs)} verified finding(s), more than any other host.",
+            benefit="Stops the host talking to the rest of the network while the analyst investigates.",
+            matched_findings=fs, d3fend_id="D3-NI", d3fend_name="Network Isolation",
+            impact="Medium to high: services on this host go offline until isolation is lifted.",
+            reversibility="Reversible by lifting the EDR network containment.",
+            rollback=f"Lift EDR network containment on {host}.",
+            connector="saksi_sim_edr", parameters={"host": host, "allow_soc_mgmt": True},
+            risk_tier="high", recommended_by="evidence_rules",
+        )
+    for user, fs in top(users, 2):
+        add_proposal(
+            action_type="disable_account", target=user,
+            title=f"Disable account {user} and revoke its sessions",
+            reason=f"{user} appears in the evidence of {len(fs)} verified finding(s), more than any other account.",
+            benefit="Cuts off any attacker using this account and forces a credential reset.",
+            matched_findings=fs, d3fend_id="D3-AL", d3fend_name="Account Locking",
+            impact="Medium: the account owner is locked out until the analyst re-enables it.",
+            reversibility="Reversible by re-enabling the account after a credential reset.",
+            rollback=f"Re-enable {user} after credential rotation and MFA re-enrolment.",
+            connector="saksi_sim_iam", parameters={"account": user, "revoke_sessions": True},
+            risk_tier="medium", recommended_by="evidence_rules",
+        )
+    for ip, fs in top(ips, 2):
+        add_proposal(
+            action_type="block_ip", target=ip,
+            title=f"Block external address {ip} at the perimeter firewall",
+            reason=f"{ip} is a public address that appears in the evidence of {len(fs)} verified finding(s).",
+            benefit="Stops further traffic to and from this address.",
+            matched_findings=fs, d3fend_id="D3-ITF", d3fend_name="Inbound/Outbound Traffic Filtering",
+            impact="Low to medium: legitimate traffic to this address would also be blocked.",
+            reversibility="Fully reversible by removing the deny rule.",
+            rollback=f"Remove {ip} from the firewall deny list.",
+            connector="saksi_sim_fw", parameters={"direction": "both", "ip": ip, "port": "any"},
+            risk_tier="medium", recommended_by="evidence_rules",
+        )
 
 
 def _find(proposals: list[ResponseProposal], case_id: str, proposal_id: str) -> ResponseProposal:

@@ -70,6 +70,11 @@ def _ingest(case_id: str, paths: list[Path], title: str, scenario: bool) -> Case
             size_bytes=evidence.stat().st_size,
             event_count=len(found),
         )
+        if not found:
+            raise ValueError(
+                f"No events could be read from {evidence.name} ({skipped} line(s) skipped). Supported: JSON, "
+                "JSONL, CSV with a timestamp column, Sysmon XML (one <Event> per line), nginx/Apache access "
+                "and error logs.")
         sources.append(source)
         events.extend(found)
         custody.append(case_id, "EVIDENCE_INGESTED", "system",

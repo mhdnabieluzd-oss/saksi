@@ -280,6 +280,29 @@ def _rule_brute_force(events: list[Event], _ctx) -> list[tuple]:
     return hits
 
 
+SIEM_TAG_MAX_TECHNIQUES = 12
+SIEM_TAG_SAMPLE = 12
+
+
+def _siem_tagged_hits(events: list[Event]) -> list[tuple]:
+    """Alerts the source SIEM already tagged with an ATT&CK technique (generic CSV/JSON feeds).
+
+    One hit per technique, ranked by how many high/critical records carry it. Each hit keeps a small
+    sample of its records (critical first) so signals stay readable; the title carries the full count.
+    Returns (title, severity, sample, technique_id, tactic) tuples.
+    """
+    tagged = [e for e in events if e.tag_technique and e.severity in ("high", "critical")]
+    ranked = sorted(_group(tagged, lambda e: e.tag_technique).items(), key=lambda kv: (-len(kv[1]), kv[0]))
+    hits = []
+    for technique, group in ranked[:SIEM_TAG_MAX_TECHNIQUES]:
+        tactic = next((e.tag_tactic for e in group if e.tag_tactic), "Unknown")
+        sample = sorted(group, key=lambda e: (e.severity != "critical", _ts(e)))[:SIEM_TAG_SAMPLE]
+        severity = "critical" if any(e.severity == "critical" for e in group) else "high"
+        hits.append((f"SIEM-tagged {technique} ({tactic}): {len(group)} high/critical alerts",
+                     severity, sample, technique, tactic))
+    return hits
+
+
 RULES: list[tuple[str, str, str, str, Callable]] = [
     ("WEB-SCAN", "T1595.002", "Reconnaissance", "medium", _rule_web_scan),
     ("WEB-SQLI", "T1190", "Initial Access", "high", _rule_web_sqli),
@@ -323,6 +346,9 @@ def run_rules(events: list[Event]) -> list[Signal]:
             continue
         for title, sev, matched in fn(events, ctx_base):
             raw_hits.append((rule_id, technique, tactic, severity, title, sev, matched))
+
+    for title, sev, matched, technique, tactic in _siem_tagged_hits(events):
+        raw_hits.append(("SIEM-TAGGED", technique, tactic, "high", title, sev, matched))
 
     raw_hits.sort(key=lambda h: (min(_ts(e) for e in h[6]), h[0], h[4]))
     signals: list[Signal] = []

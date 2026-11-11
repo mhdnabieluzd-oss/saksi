@@ -72,7 +72,7 @@ def create_initial_plan(case_id: str, scope: str, signals: list[Signal]) -> Inve
             task_id="TASK-01",
             title="Inventory triage detection signals",
             objective="Review all deterministic detection rule hits and prioritise high-severity leads.",
-            rationale="Triage flagged suspicious activity across web, Sysmon and SIEM logs.",
+            rationale="Triage flagged suspicious activity in the ingested logs.",
             status="ready",
             tool_name="list_signals",
             stage="triage",
@@ -101,13 +101,13 @@ def create_initial_plan(case_id: str, scope: str, signals: list[Signal]) -> Inve
         tasks.append(PlanTask(
             task_id=f"TASK-{idx:02d}",
             title="Inspect primary signal evidence records",
-            objective="Fetch raw event details for initial access and execution signals.",
+            objective="Fetch raw event details for the highest-priority signals.",
             rationale=f"Verify exact HTTP requests and process creation lines across {len(first_ids)} signal events.",
             status="planned",
             tool_name="get_events",
             input={"ids": first_ids},
             depends_on=["TASK-01"],
-            expected_evidence=["HTTP status codes", "Process command lines", "Parent-child process tree"],
+            expected_evidence=["Raw event fields", "Hosts, accounts and addresses involved"],
             plan_version_added=1,
         ))
         idx += 1
@@ -116,13 +116,13 @@ def create_initial_plan(case_id: str, scope: str, signals: list[Signal]) -> Inve
         tasks.append(PlanTask(
             task_id=f"TASK-{idx:02d}",
             title=f"Trace host activity on {hosts[0]}",
-            objective=f"Reconstruct process execution and credential access on {hosts[0]}.",
-            rationale=f"Host {hosts[0]} appears in early execution and web shell signals.",
+            objective=f"Reconstruct the activity recorded on {hosts[0]}.",
+            rationale=f"Host {hosts[0]} appears in the detection signals.",
             status="planned",
             tool_name="get_host_timeline",
             input={"host": hosts[0], "limit": 25},
             depends_on=["TASK-01"],
-            expected_evidence=["Web shell child processes", "LSASS memory access", "Outbound connections"],
+            expected_evidence=["Process, logon and network activity on the host"],
             plan_version_added=1,
         ))
         idx += 1
@@ -130,14 +130,14 @@ def create_initial_plan(case_id: str, scope: str, signals: list[Signal]) -> Inve
     if users:
         tasks.append(PlanTask(
             task_id=f"TASK-{idx:02d}",
-            title=f"Pivot on compromised account {users[0]}",
-            objective=f"Find explicit-credential logons and SMB share access for {users[0]}.",
-            rationale=f"Account {users[0]} is linked to lateral movement signals.",
+            title=f"Pivot on account {users[0]}",
+            objective=f"Find logons and access by {users[0]}.",
+            rationale=f"Account {users[0]} appears in the detection signals.",
             status="planned",
             tool_name="related_auth_events",
             input={"user": users[0], "limit": 25},
             depends_on=["TASK-01"],
-            expected_evidence=["Logon type 3/4648 events", "Source and destination hosts", "ADMIN$ share access"],
+            expected_evidence=["Logon events", "Source and destination hosts"],
             plan_version_added=1,
         ))
         idx += 1
@@ -145,14 +145,14 @@ def create_initial_plan(case_id: str, scope: str, signals: list[Signal]) -> Inve
     if ext_ips:
         tasks.append(PlanTask(
             task_id=f"TASK-{idx:02d}",
-            title=f"Correlate external C2 / exfiltration IP {ext_ips[-1]}",
-            objective=f"Check all network connections and bytes transferred to {ext_ips[-1]}.",
-            rationale=f"External address {ext_ips[-1]} was flagged in outbound transfer rules.",
+            title=f"Correlate external address {ext_ips[-1]}",
+            objective=f"Check all connections and data transferred to {ext_ips[-1]}.",
+            rationale=f"External address {ext_ips[-1]} appears in the detection signals.",
             status="planned",
             tool_name="search_events",
             input={"ip": ext_ips[-1], "limit": 25},
             depends_on=["TASK-01"],
-            expected_evidence=["Firewall byte counts", "Initiating process", "Staging archive path"],
+            expected_evidence=["Connections and byte counts", "Initiating hosts"],
             plan_version_added=1,
         ))
         idx += 1

@@ -5,6 +5,7 @@
 """
 from __future__ import annotations
 
+import html
 import json
 import re
 from datetime import datetime, timezone
@@ -47,7 +48,11 @@ def _candidates(e: Event) -> list[str]:
     try:
         texts.extend(_json_strings(json.loads(e.raw)))
     except (ValueError, TypeError):
-        texts.append(e.raw)
+        if e.raw.lstrip().startswith("<Event"):
+            # XML events: scan the text inside the elements, not the markup (the <System> element is not an attack).
+            texts.append(html.unescape(re.sub(r"<[^>]+>", " ", e.raw)))
+        else:
+            texts.append(e.raw)
     return texts
 
 

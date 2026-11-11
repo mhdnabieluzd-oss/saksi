@@ -83,7 +83,21 @@ _DEFAULT_CHAT_REF = _chat
 
 def _is_fast_workflow() -> bool:
     """Use the fast deterministic workflow engine unless a test monkeypatched _chat or SAKSI_LIVE_LLM=1."""
-    return _chat is _DEFAULT_CHAT_REF and os.environ.get("SAKSI_LIVE_LLM") != "1"
+    if _chat is not _DEFAULT_CHAT_REF:
+        return False
+    if os.environ.get("SAKSI_LIVE_LLM") == "1":
+        return False
+    # SAKSI_FAST_DEMO=0 with an API key set also means "use the real model" (as .env.example documents).
+    return not (os.environ.get("SAKSI_FAST_DEMO") == "0" and config.api_key())
+
+
+_HQ_MARKERS = ("WEB-PORTAL-01", "FS-LOGISTIK-01", "203.0.113.66")
+
+
+def _is_hq(text: Any) -> bool:
+    """True only for the built-in HQ-breach scenario. The canned narrative below is written for it alone."""
+    blob = text if isinstance(text, str) else json.dumps(text, default=str)
+    return any(marker in blob for marker in _HQ_MARKERS)
 
 
 def _pace(seconds: float = 0.22) -> None:
@@ -126,7 +140,7 @@ def _fast_complete_json(
                     if ent and str(ent) not in entities:
                         entities.append(str(ent))
         priority = "critical" if "critical" in severities else "high" if "high" in severities else "medium"
-        if "WEB-SQLI" in rules or "WEB-SHELL" in rules:
+        if ("WEB-SQLI" in rules or "WEB-SHELL" in rules) and _is_hq(signals):
             scope = (
                 "Detection rules matched a full intrusion chain from external IP 203.0.113.66 against "
                 "WEB-PORTAL-01 (SQL injection, web shell, encoded PowerShell, and LSASS memory dump), "
@@ -134,9 +148,12 @@ def _fast_complete_json(
                 "exfiltration to 198.51.100.77. Verify each stage against raw web, Sysmon, and SIEM logs."
             )
         elif signals:
+            techniques = list(dict.fromkeys(
+                str(s.get("technique_id")) for s in signals if isinstance(s, dict) and s.get("technique_id")))
             scope = (
-                f"{len(signals)} detection signal(s) matched across incoming logs. "
-                "Verify the highest-severity alerts and trace affected accounts and hosts."
+                f"{len(signals)} detection signal(s) matched across the uploaded logs, covering "
+                f"{', '.join(techniques[:6])}{' and more' if len(techniques) > 6 else ''}. "
+                "Verify the highest-severity alerts and trace the affected hosts, accounts and addresses."
             )
         else:
             scope = "Inspect ingested log events for suspicious authentication, command execution, or network activity."
@@ -163,6 +180,9 @@ def _fast_complete_json(
 
     if schema_name == "submit_report":
         payload = blocks[0] if blocks and isinstance(blocks[0], dict) else {}
+        if not _is_hq(user):
+            # No canned narrative exists for uploaded data. The Reporter falls back to its data-driven template.
+            raise LlmError("fast workflow has no narrative for this case; use SAKSI_LIVE_LLM=1 for an AI report")
         findings = payload.get("findings") if isinstance(payload, dict) else []
         if not isinstance(findings, list):
             findings = []
@@ -287,6 +307,25 @@ def _fast_complete_json(
                 "Disable LOGISTIK\\k.hafiz and LOGISTIK\\svc_web and revoke active Kerberos tickets.",
                 "Remove web shell img_upd.aspx, service PSEXESVC, and staged files q4.7z and lsass.dmp after preserving forensic copies.",
             ],
+        }, usage
+
+    if schema_name == "answer_question" and not _is_hq(user):
+        data = next((b for b in blocks if isinstance(b, dict)), {})
+        vf = [f for f in (data.get("verified_findings") or []) if isinstance(f, dict)]
+        cites = list(dict.fromkeys(str(i) for f in vf for i in (f.get("evidence_ids") or [])))[:6]
+        if not vf:
+            ans = "There are no verified findings for this case yet, so there is nothing to answer from. Run the investigation first."
+        else:
+            lines = [f"- {f.get('title')} ({f.get('technique_id')}, {f.get('tactic')})" for f in vf[:6]]
+            ans = f"This case has {len(vf)} verified finding(s). The top ones are:\n" + "\n".join(lines)
+            if cites:
+                ans += f"\nEvidence receipts: {', '.join(cites)}."
+        return {
+            "answer": ans,
+            "citations": [{"event_id": i} for i in cites],
+            "verified_points": [f"{f.get('title')}" for f in vf[:3]],
+            "hypotheses": [],
+            "uncertainty": "Offline fast mode lists verified findings only. Set SAKSI_LIVE_LLM=1 for a reasoned answer.",
         }, usage
 
     if schema_name == "answer_question":
@@ -450,11 +489,26 @@ def _fast_run_tools(
     sig_blocks = _extract_log_data_blocks(str(sig_res))
     signals: list[dict[str, Any]] = sig_blocks[0] if sig_blocks and isinstance(sig_blocks[0], list) else []
 
-    invoke_step(2, "get_host_timeline", {"host": "WEB-PORTAL-01", "limit": 20})
-    invoke_step(3, "search_events", {"query": "powershell", "limit": 15})
-    invoke_step(4, "pivot", {"entity": "LOGISTIK\\k.hafiz", "limit": 20})
-    invoke_step(5, "related_auth_events", {"user": "LOGISTIK\\k.hafiz", "limit": 15})
-    invoke_step(6, "get_host_timeline", {"host": "FS-LOGISTIK-01", "limit": 20})
+    hq = _is_hq(signals)
+    if hq:
+        invoke_step(2, "get_host_timeline", {"host": "WEB-PORTAL-01", "limit": 20})
+        invoke_step(3, "search_events", {"query": "powershell", "limit": 15})
+        invoke_step(4, "pivot", {"entity": "LOGISTIK\\k.hafiz", "limit": 20})
+        invoke_step(5, "related_auth_events", {"user": "LOGISTIK\\k.hafiz", "limit": 15})
+        invoke_step(6, "get_host_timeline", {"host": "FS-LOGISTIK-01", "limit": 20})
+    elif signals:
+        # Data-driven pivots for uploaded data: the entities that recur most across signals, then the top technique.
+        counts: dict[str, int] = {}
+        for sig in signals:
+            for ent in (sig.get("entities") or []) if isinstance(sig, dict) else []:
+                counts[str(ent)] = counts.get(str(ent), 0) + 1
+        rnd = 2
+        for ent, _n in sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))[:3]:
+            invoke_step(rnd, "pivot", {"entity": ent, "limit": 20})
+            rnd += 1
+        top_technique = next((str(s.get("technique_id")) for s in signals if isinstance(s, dict) and s.get("technique_id")), "")
+        if top_technique:
+            invoke_step(rnd, "lookup_technique", {"technique_id": top_technique})
 
     RULE_SUMMARIES: dict[str, tuple[str, str]] = {
         "WEB-SCAN": (
@@ -516,10 +570,10 @@ def _fast_run_tools(
         ents = [str(x) for x in (sig.get("entities") or []) if x][:8]
         if not eids:
             continue
-        title, summary = RULE_SUMMARIES.get(
-            rule_id,
-            (str(sig.get("title") or rule_id), f"{sig.get('title') or rule_id} confirmed in log events."),
-        )
+        generic = (str(sig.get("title") or rule_id),
+                   f"{sig.get('title') or rule_id}. Sampled records are cited as evidence; "
+                   f"affected entities include {', '.join(ents[:4]) or 'none listed'}.")
+        title, summary = RULE_SUMMARIES.get(rule_id, generic) if hq else generic
         findings.append({
             "title": title,
             "summary": summary,
@@ -529,7 +583,7 @@ def _fast_run_tools(
             "entities": ents,
             "confidence": "high",
         })
-        if rule_id == "PS-ENCODED":
+        if rule_id == "PS-ENCODED" and hq:
             findings.append({
                 "title": "Obfuscated Base64 PowerShell command line on WEB-PORTAL-01",
                 "summary": (
@@ -553,7 +607,7 @@ def _fast_run_tools(
         "result": {"accepted": True},
         "summary": "submitted",
     })
-    return ToolRunResult(final_args=final_args, rounds=6, usage=usage_list)
+    return ToolRunResult(final_args=final_args, rounds=max(len(usage_list), 1), usage=usage_list)
 
 
 def _model(model: str | None) -> str:
@@ -600,6 +654,15 @@ def complete_json(system: str, user: str, schema_name: str, schema: dict[str, An
         message = _message(response)
         calls = (message.tool_calls or []) if message else []
         if not calls:
+            # Some models (DeepSeek on OpenRouter) ignore a forced tool call and answer in plain text.
+            # Accept a JSON object in the text; otherwise ask once more for JSON only.
+            text = (getattr(message, "content", None) or "") if message else ""
+            parsed = _json_object_from_text(text)
+            if parsed is not None:
+                return parsed, total
+            messages = [*messages, {"role": "assistant", "content": text or "(empty)"},
+                        {"role": "user", "content": f"Reply with only one JSON object for {schema_name} that matches "
+                                                    f"this JSON schema, no other text: {json.dumps(schema)}"}]
             continue
         try:
             args = json.loads(calls[0].function.arguments or "")
@@ -610,6 +673,19 @@ def complete_json(system: str, user: str, schema_name: str, schema: dict[str, An
             return args, total
         problem = "arguments were not a JSON object"
     raise LlmError(f"{schema_name}: {problem}")
+
+
+def _json_object_from_text(text: str) -> dict[str, Any] | None:
+    """Return the first JSON object in `text` (plain, or inside a ``` fence), else None."""
+    cleaned = re.sub(r"^```(?:json)?\s*|\s*```$", "", text.strip(), flags=re.IGNORECASE)
+    start = cleaned.find("{")
+    if start < 0:
+        return None
+    try:
+        value, _end = json.JSONDecoder().raw_decode(cleaned[start:])
+    except json.JSONDecodeError:
+        return None
+    return value if isinstance(value, dict) else None
 
 
 def _parse_args(raw: str | None) -> dict[str, Any] | None:
