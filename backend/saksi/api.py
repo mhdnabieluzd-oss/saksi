@@ -76,7 +76,12 @@ MAX_TITLE_LENGTH = 120
 RECENT_CASES = 5
 RECENT_AGENT_EVENTS = 15
 DIST_DIR = PLATFORM_DIR / "frontend" / "dist" if (PLATFORM_DIR / "frontend").exists() else BASE_DIR / "web" / "dist"
-CORS_ORIGINS = ["http://localhost:5173", "http://127.0.0.1:5173"]
+CORS_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://saksi-mauve.vercel.app",       
+    "https://saksi-*.vercel.app",            
+]
 
 _SIGNALS = TypeAdapter(list[Signal])
 _FINDINGS = TypeAdapter(list[Finding])
