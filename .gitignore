@@ -39,3 +39,5 @@ Thumbs.db
 .vscode/
 .idea/
 
+dataset (fake)/
+dataset (real)/

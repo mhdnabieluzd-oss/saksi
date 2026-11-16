@@ -175,7 +175,7 @@ def _events_root_ok(case_id: str, raw: list[dict[str, Any] | None]) -> bool | No
 
 
 def _signature(case_id: str, raw: list[dict[str, Any] | None]) -> SignatureStatus:
-    """Verify seal.json against the chain as it is now, so any edit to an entry at or before the seal fails."""
+    """Verify on against the chain as it is now, so any edit to an entry at or before the seal fails."""
     public_key = _public_key()
     fingerprint = _fingerprint(public_key) if public_key else ""
     seal_path = _seal_path(case_id)
