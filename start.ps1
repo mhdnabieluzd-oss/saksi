@@ -1,6 +1,6 @@
 param(
     [switch]$SeedOnly,
-    [int]$BackendPort = 8000,
+    [int]$BackendPort = 8080,
     [int]$FrontendPort = 5173
 )
 
