@@ -416,7 +416,6 @@ function About() {
         <p className="text-sm leading-relaxed text-text-secondary">
           <span className="font-medium text-text">Developed by Universiti Teknologi MARA (UiTM), Faculty of Computer and
           Mathematical Sciences (FSKM).</span>{" "}
-          Prepared for iHack 2026 Industrial Pitching.
         </p>
       </div>
     </Section>
@@ -453,7 +452,7 @@ function Footer() {
         </div>
         <p>Universiti Teknologi MARA · FSKM</p>
         <p className="text-text">Stronger Cyber Defence. A Safer Malaysia.</p>
-        <p className="font-mono text-text-muted">iHack 2026 · Industrial Pitching · 17 November 2026</p>
+        <p className="font-mono text-text-muted">© 2026 SAKSI Platform. All rights reserved. | mhdnabieluzd</p>
       </div>
     </footer>
   );
