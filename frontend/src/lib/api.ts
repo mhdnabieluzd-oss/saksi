@@ -28,7 +28,8 @@ import type {
   BenchmarkRunResult,
 } from "./types";
 
-export const API_BASE = "/api";
+const envApiUrl = import.meta.env.VITE_API_URL as string | undefined;
+export const API_BASE = envApiUrl ? `${envApiUrl}/api` : "/api";
 
 export class ApiError extends Error {
   readonly status: number;
