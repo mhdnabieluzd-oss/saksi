@@ -92,7 +92,8 @@ _evidence_cache: dict[str, tuple[int, int, int]] = {}  # case_id -> (events mtim
 app = FastAPI(title="SAKSI API", version="1.0")
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=CORS_ORIGINS,
+    allow_origins=["*"],          
+    allow_credentials=False,      
     allow_methods=["*"],
     allow_headers=["*"],
 )
